@@ -8,12 +8,12 @@ class GlobalContext {
     private var _objects = HashMap<String, Object>()
     private init() {}
 
-    public func getContext(): ?GlobalContext {
+    public static func getContext(): GlobalContext {
         if (let Some(instance) <- GlobalContext.instance) {
         } else {
             GlobalContext.instance = GlobalContext()
         }
-        return GlobalContext.instance
+        return GlobalContext.instance()
     }
 
     func getObject(value: String): ?Object {
