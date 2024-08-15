@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "roundedimageview",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
