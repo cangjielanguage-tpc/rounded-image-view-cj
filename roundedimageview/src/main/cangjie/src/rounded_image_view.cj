@@ -10,14 +10,14 @@ public class RoundedImageView {
     @State
     var model: RoundedImageNameModel = RoundedImageNameModel()
     var settings: RenderingContextSettings = RenderingContextSettings(antialias: true)
-    var context: CanvasRenderingContext2D = CanvasRenderingContext2D(settings)
-    var bottomLayerContext: CanvasRenderingContext2D = CanvasRenderingContext2D(settings)
-    var img: ?PixelMap = None
-    var srcWidth: Float64 = 0.0
-    var srcHeight: Float64 = 0.0
-    var minScale: Float64 = 1.0
-    var scaleW: Float64 = 0.0
-    var scaleH: Float64 = 0.0
+    @State var context: CanvasRenderingContext2D = CanvasRenderingContext2D(settings)
+    @State var bottomLayerContext: CanvasRenderingContext2D = CanvasRenderingContext2D(settings)
+    @State var img: ?PixelMap = Option<PixelMap>.None
+    @State var srcWidth: Float64 = 0.0
+    @State var srcHeight: Float64 = 0.0
+    @State var minScale: Float64 = 1.0
+    @State var scaleW: Float64 = 0.0
+    @State var scaleH: Float64 = 0.0
     let mathPI: Float64 = 3.14
 
     func setImageCanvasTransform() {
@@ -305,17 +305,17 @@ public class RoundedImageView {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
-            (GlobalContext.getContext().getObject("context") as AbilityContext)()
+            GlobalContext.getContext().getObject("context")()
         }
         let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         match (model.srcType) {
             case Some(SrcType.MEDIA) => if (model.srcResource.isSome()) {
-                let mediaSrc: ResourceManagerResource = model.srcResource()
+                let mediaSrc: CJResource = model.srcResource()
                 let callbackSvg: (Bool, Array<Byte>) -> Unit = {
                     error, value => callback(value)
                 }
                 spawn {
-                    let array: Array<UInt8> = resourceManager.getMediaContent(mediaSrc, 0)
+                    let array: Array<UInt8> = resourceManager.getMediaContent(UInt32(mediaSrc.id), 0)
                     callbackSvg(true, array)
                 }
             }
@@ -334,16 +334,15 @@ public class RoundedImageView {
     }
 
     private func drawBitmap() {
-        if (model.getIsSvg()) {
-            // TODO
-            let callbackSvg: (Array<Byte>) -> Unit = {
-                svgData => ()
-            }
-            return
-        }
-
+//        if (model.getIsSvg()) {
+//            // TODO
+//            let callbackSvg: (Array<Byte>) -> Unit = {
+//                svgData => ()
+//            }
+//            return
+//        }
         let callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit = {
-            pixelMap, width, height, error => if (!error) {
+            pixelMap, width, height, error => if (error) {
                 img = pixelMap
                 srcWidth = Float64(width)
                 srcHeight = Float64(height)
@@ -370,26 +369,28 @@ public class RoundedImageView {
                 context.stroke()
             }
         }
-        if (let Some(v) <- model.src) {
-            PixelMapUtils.createPixelMap(v, model.srcType, callback, model.getContext())
-        } else if (let Some(v) <- model.srcArray) {
-            PixelMapUtils.createPixelMap(v, model.srcType, callback, model.getContext())
-        } else if (let Some(v) <- model.srcResource) {
-            PixelMapUtils.createPixelMap(v, model.srcType, callback, model.getContext())
-        } else {
+        spawn {
+            if (let Some(v) <- model.src) {
+                PixelMapUtils.createPixelMap(v, model.srcType, callback, model.getContext())
+            } else if (let Some(v) <- model.srcArray) {
+                PixelMapUtils.createPixelMap(v, model.srcType, callback, model.getContext())
+            } else if (let Some(v) <- model.srcResource) {
+                PixelMapUtils.createPixelMap(v, model.srcType, callback, model.getContext())
+            } else {
+            }
         }
     }
 
     private func drawOvals() {
-        if (model.getIsSvg()) {
-            // TODO
-            let callbackSvg: (Array<Byte>) -> Unit = {
-                svgData => ()
-            }
-            return
-        }
+//        if (model.getIsSvg()) {
+//            // TODO
+//            let callbackSvg: (Array<Byte>) -> Unit = {
+//                svgData => ()
+//            }
+//            return
+//        }
         let callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit = {
-            pixelMap, width, height, error => if (!error) {
+            pixelMap, width, height, error => if (error) {
                 img = pixelMap
                 srcWidth = Float64(width)
                 srcHeight = Float64(height)
@@ -617,14 +618,9 @@ public class RoundedImageView {
                 Canvas(context)
                     .width(model.uiWidth)
                     .height(model.uiHeight)
-                    .onReady(
-                        {
-                            =>
-                            let that = this
-                            sleep(100 * Duration.millisecond)
-                            that.drawBitmap()
-                        }
-                    )
+                    .onReady({
+                            => drawBitmap()
+                    })
             }
         }
     }
@@ -633,7 +629,7 @@ public class RoundedImageView {
 public class RoundedImageNameModel {
     var src: ?String = None
     var srcArray: ?Array<Byte> = None
-    var srcResource: ?ResourceManagerResource = None
+    var srcResource: ?CJResource = None
     var srcType: ?SrcType = None
     var isSvg: Bool = false
     var typeValue: String = ""
@@ -666,17 +662,17 @@ public class RoundedImageNameModel {
         return this.context
     }
 
-    public func setImageSrc(src: String): RoundedImageNameModel {
+    public func setImageSrc(src: ?String): RoundedImageNameModel {
         this.src = src
         return this
     }
 
-    public func setImageSrc(srcArray: Array<Byte>): RoundedImageNameModel {
+    public func setImageSrc(srcArray: ?Array<Byte>): RoundedImageNameModel {
         this.srcArray = srcArray
         return this
     }
 
-    public func setImageSrc(srcResource: ResourceManagerResource): RoundedImageNameModel {
+    public func setImageSrc(srcResource: ?CJResource): RoundedImageNameModel {
         this.srcResource = srcResource
         return this
     }
@@ -689,7 +685,7 @@ public class RoundedImageNameModel {
         return this.srcArray
     }
 
-    public func getImageSrcResource(): ?ResourceManagerResource {
+    public func getImageSrcResource(): ?CJResource {
         return this.srcResource
     }
 
@@ -756,17 +752,17 @@ public class RoundedImageNameModel {
         return this.tileMode
     }
 
-    public func setBackgroundColor(backgroundColor: Color): RoundedImageNameModel {
+    public func setBackgroundColor(backgroundColor: ?Color): RoundedImageNameModel {
         this.backgroundColor = backgroundColor
         return this
     }
 
-    public func setBackgroundColor(backgroundColorUInt32: UInt32): RoundedImageNameModel {
+    public func setBackgroundColor(backgroundColorUInt32: ?UInt32): RoundedImageNameModel {
         this.backgroundColorUInt32 = backgroundColorUInt32
         return this
     }
 
-    public func setBackgroundColor(backgroundColorCanvasGradient: CanvasGradient): RoundedImageNameModel {
+    public func setBackgroundColor(backgroundColorCanvasGradient: ?CanvasGradient): RoundedImageNameModel {
         this.backgroundColorCanvasGradient = backgroundColorCanvasGradient
         return this
     }
@@ -801,17 +797,17 @@ public class RoundedImageNameModel {
         return this.borderWidth
     }
 
-    public func setBorderColor(borderColor: Color): RoundedImageNameModel {
+    public func setBorderColor(borderColor: ?Color): RoundedImageNameModel {
         this.borderColor = borderColor
         return this
     }
 
-    public func setBorderColor(borderColorUInt32: UInt32): RoundedImageNameModel {
+    public func setBorderColor(borderColorUInt32: ?UInt32): RoundedImageNameModel {
         this.borderColorUInt32 = borderColorUInt32
         return this
     }
 
-    public func setBorderColor(borderColorCanvasGradient: CanvasGradient): RoundedImageNameModel {
+    public func setBorderColor(borderColorCanvasGradient: ?CanvasGradient): RoundedImageNameModel {
         this.borderColorCanvasGradient = borderColorCanvasGradient
         return this
     }
