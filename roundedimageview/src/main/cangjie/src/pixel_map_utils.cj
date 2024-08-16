@@ -4,7 +4,7 @@
 package roundedimageview
 
 class PixelMapUtils {
-    public static func createPixelMap(src: String, srcType: SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
+    public static func createPixelMap(src: String, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
@@ -12,25 +12,25 @@ class PixelMapUtils {
         }
         let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         match (srcType) {
-            case SrcType.MEDIA =>
+            case Some(SrcType.MEDIA) =>
                 let arrayUInt8: Array<UInt8> = resourceManager.getMediaByName(src, 0)
                 callbackPixelMap(arrayUInt8, callback)
-            case SrcType.RAWFILE =>
+            case Some(SrcType.RAWFILE) =>
                 let arrayUInt8: Array<UInt8> = resourceManager.getRawFileContent(src)
                 callbackPixelMap(arrayUInt8, callback)
-            case SrcType.URI => callbackPixelMap(src, callback)
-            case SrcType.URL =>
+            case Some(SrcType.URI) => callbackPixelMap(src, callback)
+            case Some(SrcType.URL) =>
                 let downloadUtilsCallback: (arrayBuffer: ?Array<Byte>, error: Bool) -> Unit = {
                     arrayBuffer, error => if (error) {
                         callbackPixelMap(arrayBuffer(), callback)
                     }
                 }
                 DownloadUtils().loadData(src, downloadUtilsCallback)
-            case SrcType.ARRAYBUFFER => ()
+            case _ => ()
         }
     }
 
-    public static func createPixelMap(src: ResourceManagerResource, srcType: SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
+    public static func createPixelMap(src: ResourceManagerResource, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
@@ -38,14 +38,14 @@ class PixelMapUtils {
         }
         let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         match (srcType) {
-            case SrcType.MEDIA =>
+            case Some(SrcType.MEDIA) =>
                 let arrayUInt8: Array<UInt8> = resourceManager.getMediaContent(src, 0)
                 callbackPixelMap(arrayUInt8, callback)
             case _ => ()
         }
     }
 
-    public static func createPixelMap(src: Array<Byte>, srcType: SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
+    public static func createPixelMap(src: Array<Byte>, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
@@ -53,7 +53,7 @@ class PixelMapUtils {
         }
         let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         match (srcType) {
-            case SrcType.ARRAYBUFFER => callbackPixelMap(src, callback)
+            case Some(SrcType.ARRAYBUFFER) => callbackPixelMap(src, callback)
             case _ => ()
         }
     }
