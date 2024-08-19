@@ -3,9 +3,9 @@
  */
 package roundedimageview
 
-class GlobalContext {
+public class GlobalContext {
     private static var instance: ?GlobalContext = Option<GlobalContext>.None
-    private var _objects = HashMap<String, Object>()
+    private var _objects = HashMap<String, AbilityContext>()
     private init() {}
 
     public static func getContext(): GlobalContext {
@@ -16,11 +16,11 @@ class GlobalContext {
         return GlobalContext.instance()
     }
 
-    func getObject(value: String): ?Object {
-        return this._objects.get(value);
+    public func getObject(value: String): ?AbilityContext {
+        return this._objects.get(value)
     }
 
-    func setObject(key: String, objectClass: Object): Unit {
-        this._objects.put(key, objectClass);
+    public func setObject(key: String, objectClass: AbilityContext): Unit {
+        this._objects.put(key, objectClass)
     }
 }

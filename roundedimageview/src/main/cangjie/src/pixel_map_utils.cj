@@ -8,7 +8,7 @@ class PixelMapUtils {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
-            (GlobalContext.getContext().getObject("context") as AbilityContext)()
+            GlobalContext.getContext().getObject("context")()
         }
         let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         match (srcType) {
@@ -30,16 +30,16 @@ class PixelMapUtils {
         }
     }
 
-    public static func createPixelMap(src: ResourceManagerResource, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
+    public static func createPixelMap(src: CJResource, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
-            (GlobalContext.getContext().getObject("context") as AbilityContext)()
+            GlobalContext.getContext().getObject("context")()
         }
         let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         match (srcType) {
             case Some(SrcType.MEDIA) =>
-                let arrayUInt8: Array<UInt8> = resourceManager.getMediaContent(src, 0)
+                let arrayUInt8: Array<UInt8> = resourceManager.getMediaContent(UInt32(src.id), 0)
                 callbackPixelMap(arrayUInt8, callback)
             case _ => ()
         }
@@ -49,7 +49,7 @@ class PixelMapUtils {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
-            (GlobalContext.getContext().getObject("context") as AbilityContext)()
+            GlobalContext.getContext().getObject("context")()
         }
         let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         match (srcType) {
@@ -64,8 +64,8 @@ class PixelMapUtils {
             let imageInfo: ImageInfo = imageSource.getImageInfo()
             let width = imageInfo.size.width
             let height = imageInfo.size.height
-            imageSource.Release()
             let pixelMap: PixelMap = imageSource.createPixelMap()
+            imageSource.Release()
             callback(pixelMap, Int64(width), Int64(height), true)
         } catch (e: Exception) {
             AppLog.error("PixelMapUtils imageSource.getImageInfo error: ${e}")
@@ -79,8 +79,8 @@ class PixelMapUtils {
             let imageInfo: ImageInfo = imageSource.getImageInfo()
             let width = imageInfo.size.width
             let height = imageInfo.size.height
-            imageSource.Release()
             let pixelMap: PixelMap = imageSource.createPixelMap()
+            imageSource.Release()
             callback(pixelMap, Int64(width), Int64(height), true)
         } catch (e: Exception) {
             AppLog.error("PixelMapUtils imageSource.getImageInfo error: ${e}")
