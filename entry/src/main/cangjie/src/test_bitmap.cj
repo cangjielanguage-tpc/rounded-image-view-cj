@@ -173,7 +173,7 @@ class TestBitmap {
         )
     )
 
-    protected override func onAppear() {
+    protected override func aboutToAppear() {
         initViewModels()
         updateViewModels(rectPictureItems)
     }

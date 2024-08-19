@@ -4,7 +4,7 @@
 package roundedimageview
 
 class DownloadUtils {
-    func loadData(url: String, callback: (arrayBuffer: ?Array<Byte>, error: Bool) -> Unit) {
+    func loadData(url: String): (?Array<Byte>, Bool) {
         var arrayBuffer: ?Array<Byte> = Option<Array<Byte>>.None
         var error: Bool = true
         try {
@@ -38,6 +38,6 @@ class DownloadUtils {
         } catch (_) {
             error = false
         }
-        callback(arrayBuffer, error)
+        return (arrayBuffer, error)
     }
 }

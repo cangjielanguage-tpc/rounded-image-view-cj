@@ -4,87 +4,116 @@
 package roundedimageview
 
 class PixelMapUtils {
-    public static func createPixelMap(src: String, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
-        let contexts: AbilityContext = if (let Some(v) <- context) {
-            v
-        } else {
-            GlobalContext.getContext().getObject("context")()
-        }
-        let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
-        match (srcType) {
-            case Some(SrcType.MEDIA) =>
-                let arrayUInt8: Array<UInt8> = resourceManager.getMediaByName(src, 0)
-                callbackPixelMap(arrayUInt8, callback)
-            case Some(SrcType.RAWFILE) =>
-                let arrayUInt8: Array<UInt8> = resourceManager.getRawFileContent(src)
-                callbackPixelMap(arrayUInt8, callback)
-            case Some(SrcType.URI) => callbackPixelMap(src, callback)
-            case Some(SrcType.URL) =>
-                let downloadUtilsCallback: (arrayBuffer: ?Array<Byte>, error: Bool) -> Unit = {
-                    arrayBuffer, error => if (error) {
-                        callbackPixelMap(arrayBuffer(), callback)
-                    }
+    public static func createPixelMap(src: ?String, srcResource: ?CJResource, srcArray: ?Array<Byte>, srcType: ?SrcType, isSvg: Bool, callback: (?PixelMap, Int64, Int64, Bool) -> Unit, context: ?AbilityContext): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var strUri: ?String = Option<String>.None
+            var dataArray: ?Array<Byte> = Option<Array<Byte>>.None
+            var pixelMap: ?PixelMap = Option<PixelMap>.None
+            var width: Int64 = 0
+            var height: Int64 = 0
+            var error: Bool = false
+            try (imageLoadLimiter = ImageLoadLimiter()) {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
                 }
-                DownloadUtils().loadData(src, downloadUtilsCallback)
-            case _ => ()
+                let resourceManager = getResourceManager(context)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                match (srcType) {
+                    case Some(SrcType.MEDIA) =>
+                        if (let Some(v) <- src) {
+                            dataArray = resourceManager.getMediaByName(v, 0)
+                        } else if (let Some(v) <- srcResource) {
+                            dataArray = resourceManager.getMediaContent(UInt32(v.id), 0)
+                        }
+                    case Some(SrcType.RAWFILE) =>
+                        if (let Some(v) <- src) {
+                            dataArray = resourceManager.getRawFileContent(v)
+                        }
+                    case Some(SrcType.URI) =>
+                        if (let Some(v) <- src) {
+                            strUri = v
+                        }
+                    case Some(SrcType.URL) =>
+                        if (let Some(v) <- src) {
+                            let data: (?Array<Byte>, Bool) = DownloadUtils().loadData(v)
+                            if (data[1]) {
+                                dataArray = data[0]
+                            }
+                        }
+                    case Some(SrcType.ARRAYBUFFER) =>
+                        if (let Some(v) <- srcArray) {
+                            dataArray = v
+                        }
+                    case _ => ()
+                }
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                let imageSource: ImageSource = if (let Some(v) <- strUri) {
+                    createImageSource(v)
+                } else if (let Some(v) <- dataArray) {
+                    createImageSource(v)
+                } else {
+                    throw Exception("ImageSource faild !!!")
+                }
+                let imageInfo: ImageInfo = imageSource.getImageInfo()
+                width = Int64(imageInfo.size.width)
+                height = Int64(imageInfo.size.height)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    imageSource.Release()
+                    return
+                }
+                pixelMap = imageSource.createPixelMap()
+                imageSource.Release()
+                error = true
+            } catch (e: Exception) {
+                error = false
+                AppLog.error("PixelMapUtils imageSource.getImageInfo error: ${e}")
+            } finally {
+                try {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        pixelMap?.Release()
+                        return
+                    }
+                    callback(pixelMap, width, height, error)
+                } catch (_) {
+                    AppLog.error("PixelMapUtils imageSource.getImageInfo error")
+                }
+            }
         }
+        return fut
     }
 
-    public static func createPixelMap(src: CJResource, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
+    private static func getResourceManager(context: ?AbilityContext): ResourceManager {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
             GlobalContext.getContext().getObject("context")()
         }
-        let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
-        match (srcType) {
-            case Some(SrcType.MEDIA) =>
-                let arrayUInt8: Array<UInt8> = resourceManager.getMediaContent(UInt32(src.id), 0)
-                callbackPixelMap(arrayUInt8, callback)
-            case _ => ()
-        }
+        let resourceManager: ResourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
+        return resourceManager
+    }
+}
+
+class ImageLoadLimiter <: Resource {
+    static let semaphore: Semaphore = Semaphore(50)
+    let closed = AtomicBool(false)
+
+    init() {
+        semaphore.acquire()
     }
 
-    public static func createPixelMap(src: Array<Byte>, srcType: ?SrcType, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit, context: ?AbilityContext): Unit {
-        let contexts: AbilityContext = if (let Some(v) <- context) {
-            v
-        } else {
-            GlobalContext.getContext().getObject("context")()
-        }
-        let resourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
-        match (srcType) {
-            case Some(SrcType.ARRAYBUFFER) => callbackPixelMap(src, callback)
-            case _ => ()
-        }
+    public override func isClosed(): Bool {
+        return closed.load()
     }
 
-    private static func callbackPixelMap(src: String, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit): Unit {
-        try {
-            let imageSource: ImageSource = createImageSource(src)
-            let imageInfo: ImageInfo = imageSource.getImageInfo()
-            let width = imageInfo.size.width
-            let height = imageInfo.size.height
-            let pixelMap: PixelMap = imageSource.createPixelMap()
-            imageSource.Release()
-            callback(pixelMap, Int64(width), Int64(height), true)
-        } catch (e: Exception) {
-            AppLog.error("PixelMapUtils imageSource.getImageInfo error: ${e}")
-            callback(Option<PixelMap>.None, 0, 0, false)
+    public override func close(): Unit {
+        if (isClosed()) {
+            return
         }
-    }
-
-    private static func callbackPixelMap(src: Array<Byte>, callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit): Unit {
-        try {
-            let imageSource: ImageSource = createImageSource(src)
-            let imageInfo: ImageInfo = imageSource.getImageInfo()
-            let width = imageInfo.size.width
-            let height = imageInfo.size.height
-            let pixelMap: PixelMap = imageSource.createPixelMap()
-            imageSource.Release()
-            callback(pixelMap, Int64(width), Int64(height), true)
-        } catch (e: Exception) {
-            AppLog.error("PixelMapUtils imageSource.getImageInfo error: ${e}")
-            callback(Option<PixelMap>.None, 0, 0, false)
-        }
+        semaphore.release()
+        closed.store(true)
     }
 }

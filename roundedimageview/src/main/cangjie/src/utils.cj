@@ -11,3 +11,25 @@ extend<T> Option<T> {
         this.getOrThrow()
     }
 }
+
+/**
+ * 取消线程
+ */
+func threadFutureCancel(fut: ?Future<Unit>) {
+    spawn {
+        if (let Some(v) <- fut) {
+            v.cancel()
+        }
+    }
+}
+
+/**
+ * 释放PixelMap
+ */
+func delPixelMap(pixelMap: ?PixelMap) {
+    spawn {
+        if (let Some(v) <- pixelMap) {
+            v.Release()
+        }
+    }
+}
