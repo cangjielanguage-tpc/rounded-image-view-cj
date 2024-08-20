@@ -125,7 +125,7 @@ class TestSVG {
         )
     )
 
-    protected override func onAppear() {
+    protected override func aboutToAppear() {
         initViewModels()
         updateViewModels(svgItems)
     }

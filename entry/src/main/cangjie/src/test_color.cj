@@ -118,7 +118,7 @@ class TestColor {
         )
     )
 
-    protected override func onAppear() {
+    protected override func aboutToAppear() {
         initViewModels()
         updateViewModels(colorItems)
     }

@@ -183,7 +183,7 @@ class TestBackground {
         )
     )
 
-    protected override func onAppear() {
+    protected override func aboutToAppear() {
         initViewModels()
         updateViewModels(backgroundColorItems)
     }
