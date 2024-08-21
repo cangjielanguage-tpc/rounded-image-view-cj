@@ -3,6 +3,9 @@
  */
 package roundedimageview
 
+/**
+ * 图片类型
+ */
 public enum SrcType <: Hashable & Equatable<SrcType> & ToString {
     | MEDIA
     | RAWFILE
@@ -10,10 +13,21 @@ public enum SrcType <: Hashable & Equatable<SrcType> & ToString {
     | URL
     | ARRAYBUFFER
 
+    /**
+     * 获取hashCode
+     *
+     * @return hashCode
+     */
     public override func hashCode(): Int64 {
         return toString().hashCode()
     }
 
+    /**
+     * 判断两个枚举是否相等
+     *
+     * @param that 其他枚举
+     * @return 是否相等
+     */
     public operator func ==(that: SrcType): Bool {
         match ((this, that)) {
             case (MEDIA, MEDIA) => true
@@ -25,10 +39,21 @@ public enum SrcType <: Hashable & Equatable<SrcType> & ToString {
         }
     }
 
+    /**
+     * 判断两个枚举是否不相等
+     *
+     * @param that 其他枚举
+     * @return 是否不相等
+     */
     public operator func !=(that: SrcType): Bool {
         return !(this == that)
     }
 
+    /**
+     * 获取toString
+     *
+     * @return toString
+     */
     public override func toString(): String {
         match (this) {
             case MEDIA => "MEDIA"

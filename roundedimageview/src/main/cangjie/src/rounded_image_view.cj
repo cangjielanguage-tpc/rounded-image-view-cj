@@ -5,6 +5,9 @@ package roundedimageview
 
 import ohos.state_macro_manage.*
 
+/**
+ * RoundedImageView预览自定义控件
+ */
 @Component
 public class RoundedImageView {
     @State

@@ -15,7 +15,7 @@ class MainAbility <: Ability {
 
     public override func onCreate(want: Want, launchParam: LaunchParam): Unit {
         globalAbilityContext = context
-        GlobalContext.getContext().setObject("context", globalAbilityContext.getOrThrow())
+        GlobalContext.getContext().setAbilityContext(globalAbilityContext.getOrThrow())
         AppLog.info("MainAbility OnCreated.${want.abilityName}")
         match (launchParam.launchReason) {
             case LaunchReason.START_ABILITY => AppLog.info("START_ABILITY")
