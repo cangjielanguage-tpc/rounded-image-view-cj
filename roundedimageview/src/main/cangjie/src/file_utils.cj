@@ -9,7 +9,7 @@ class FileUtils {
     private init() {
     }
 
-    public static func getInstance(): FileUtils {
+    static func getInstance(): FileUtils {
         if (let Some(instance) <- FileUtils.sInstance) {
         } else {
             FileUtils.sInstance = FileUtils()

@@ -4,7 +4,7 @@
 package roundedimageview
 
 class PixelMapUtils {
-    public static func createPixelMap(src: ?String, srcResource: ?CJResource, srcArray: ?Array<Byte>, srcType: ?SrcType, isSvg: Bool, callback: (?PixelMap, Int64, Int64, Bool) -> Unit, context: ?AbilityContext): Future<Unit> {
+    static func createPixelMap(src: ?String, srcResource: ?CJResource, srcArray: ?Array<Byte>, srcType: ?SrcType, isSvg: Bool, callback: (?PixelMap, Int64, Int64, Bool) -> Unit, context: ?AbilityContext): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var strUri: ?String = Option<String>.None
             var dataArray: ?Array<Byte> = Option<Array<Byte>>.None
@@ -51,23 +51,30 @@ class PixelMapUtils {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                let imageSource: ImageSource = if (let Some(v) <- strUri) {
-                    createImageSource(v)
-                } else if (let Some(v) <- dataArray) {
-                    createImageSource(v)
+                if (isSvg) {
+                    // TODO SVG图片
+                    if (let Some(v) <- dataArray) {
+
+                    }
                 } else {
-                    throw Exception("ImageSource faild !!!")
-                }
-                let imageInfo: ImageInfo = imageSource.getImageInfo()
-                width = Int64(imageInfo.size.width)
-                height = Int64(imageInfo.size.height)
-                if (Thread.currentThread.hasPendingCancellation) {
+                    let imageSource: ImageSource = if (let Some(v) <- strUri) {
+                        createImageSource(v)
+                    } else if (let Some(v) <- dataArray) {
+                        createImageSource(v)
+                    } else {
+                        throw Exception("ImageSource faild !!!")
+                    }
+                    let imageInfo: ImageInfo = imageSource.getImageInfo()
+                    width = Int64(imageInfo.size.width)
+                    height = Int64(imageInfo.size.height)
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        imageSource.Release()
+                        return
+                    }
+                    pixelMap = imageSource.createPixelMap()
                     imageSource.Release()
-                    return
+                    error = true
                 }
-                pixelMap = imageSource.createPixelMap()
-                imageSource.Release()
-                error = true
             } catch (e: Exception) {
                 error = false
                 AppLog.error("PixelMapUtils imageSource.getImageInfo error: ${e}")
@@ -90,7 +97,7 @@ class PixelMapUtils {
         let contexts: AbilityContext = if (let Some(v) <- context) {
             v
         } else {
-            GlobalContext.getContext().getObject("context")()
+            GlobalContext.getContext().getAbilityContext()()
         }
         let resourceManager: ResourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         return resourceManager
