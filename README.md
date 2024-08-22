@@ -65,7 +65,7 @@ roundedImageView4cj支持圆角（和椭圆或圆形）的快速 ImageView。
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](doc/API.md)
+主要类和函数接口说明详见 [API](doc/feature_api)
 
 ## 使用说明
 
