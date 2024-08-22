@@ -39,7 +39,7 @@ public class RoundedImageView {
     @State
     var scaleH: Float64 = 0.0
 
-    let mathPI: Float64 = 3.14
+    let mathPI: Float64 = Float64.PI
 
     /**
      * 线程
