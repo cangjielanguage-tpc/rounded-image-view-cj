@@ -603,28 +603,28 @@ public class RoundedImageView {
 
     func build() {
         Flex(FlexParams(alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center)) {
-            if (model.typeValue == "Bitmap") {
+            if (model.typeValue == ImgValueType.IMG_VALUE_BITMAP) {
                 Canvas(context)
                     .width(model.uiWidth)
                     .height(model.uiHeight)
                     .onReady({
                         => drawBitmap()
                     })
-            } else if (model.typeValue == "Ovals") {
+            } else if (model.typeValue == ImgValueType.IMG_VALUE_OVALS) {
                 Canvas(context)
                     .width(model.uiWidth)
                     .height(model.uiHeight)
                     .onReady({
                         => drawOvals()
                     })
-            } else if (model.typeValue == "Color") {
+            } else if (model.typeValue == ImgValueType.IMG_VALUE_COLOR) {
                 Canvas(context)
                     .width(model.uiWidth)
                     .height(model.uiHeight)
                     .onReady({
                         => drawColors()
                     })
-            } else if (model.typeValue == "Background") {
+            } else if (model.typeValue == ImgValueType.IMG_VALUE_BACKGROUND) {
                 Stack() {
                     Canvas(bottomLayerContext)
                         .onReady({
@@ -640,7 +640,7 @@ public class RoundedImageView {
                 }
                 .width(model.uiWidth)
                 .height(model.uiHeight)
-            } else if (model.typeValue == "SVG") {
+            } else if (model.typeValue == ImgValueType.IMG_VALUE_SVG) {
                 Canvas(context)
                     .width(model.uiWidth)
                     .height(model.uiHeight)

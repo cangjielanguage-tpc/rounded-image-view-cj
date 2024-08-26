@@ -12,7 +12,7 @@ public class RoundedImageNameModel {
     var srcResource: ?CJResource = None
     var srcType: ?SrcType = None
     var isSvg: Bool = false
-    var typeValue: String = ""
+    var typeValue: ImgValueType = ImgValueType.IMG_VALUE_BITMAP
     var uiWidth: Float64 = 0.0
     var uiHeight: Float64 = 0.0
     var backgroundColor: ?Color = None
@@ -159,10 +159,10 @@ public class RoundedImageNameModel {
     /**
      * 设置显示类型
      *
-     * @param typeValue 显示类型。(Bitmap:圆角图片类型)(Ovals:椭圆形图片类型)(Color:颜色类型)(Background:带有背景的类型)(SVG:SVG类型)
+     * @param typeValue 显示类型，默认Bitmap。(Bitmap:圆角图片类型)(Ovals:椭圆形图片类型)(Color:颜色类型)(Background:带有背景的类型)(SVG:SVG类型)
      * @return RoundedImageNameModel对象
      */
-    public func setTypeValue(typeValue: String): RoundedImageNameModel {
+    public func setTypeValue(typeValue: ImgValueType): RoundedImageNameModel {
         this.typeValue = typeValue
         return this
     }
@@ -172,7 +172,7 @@ public class RoundedImageNameModel {
      *
      * @return 显示类型
      */
-    public func getTypeValue(): String {
+    public func getTypeValue(): ImgValueType {
         return this.typeValue
     }
 
