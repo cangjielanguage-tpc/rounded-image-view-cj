@@ -7,12 +7,19 @@ package roundedimageview
  * 图片缩放类型
  */
 public enum ScaleType <: Hashable & Equatable<ScaleType> & ToString {
+    // 等比缩放到控件大小，并放置在控件的上边或左边展示
     | FIT_START
+    // 图片等比缩放到控件大小，并放置在控件的下边或右边展示
     | FIT_END
+    // 等比缩放到能够填充控件大小，并居中展示
     | FIT_CENTER
+    // 不使用缩放，控件会展示图片的中心部分
     | CENTER
+    // 等比缩放直到完全填充整个控件，并居中显示
     | CENTER_CROP
+    // 缩放到控件大小，完全填充控件大小展示
     | FIT_XY
+    // 等比缩放到能够完整展示在控件中并居中
     | CENTER_INSIDE
 
     /**

@@ -8,14 +8,14 @@ RoundedImageView预览自定义控件
 
 ```cangjie
 /**
- * Markdown预览自定义控件
+ * roundedimageview预览自定义控件
  */
 @Component
 public class RoundedImageView {
     /**
-    * 初始化Markdown自定义控件
+    * 初始化roundedimageview自定义控件
     *
-    * @param mdStr 传入markdown文档内容
+    * @param model 传入roundedimageview配置内容
     */
     RoundedImageView(model: model)
 }
@@ -133,14 +133,14 @@ public class RoundedImageNameModel {
      * @param typeValue 显示类型。(Bitmap:圆角图片类型)(Ovals:椭圆形图片类型)(Color:颜色类型)(Background:带有背景的类型)(SVG:SVG类型)
      * @return RoundedImageNameModel对象
      */
-    public func setTypeValue(typeValue: String): RoundedImageNameModel
+    public func setTypeValue(typeValue: ImgValueType): RoundedImageNameModel
 
     /**
      * 获取显示类型
      *
      * @return 显示类型
      */
-    public func getTypeValue(): String
+    public func getTypeValue(): ImgValueType
 
     /**
      * 设置控件宽度
@@ -404,12 +404,19 @@ ScaleType图片缩放类型
  * 图片缩放类型
  */
 public enum ScaleType <: Hashable & Equatable<ScaleType> & ToString {
+    // 等比缩放到控件大小，并放置在控件的上边或左边展示
     | FIT_START
+    // 图片等比缩放到控件大小，并放置在控件的下边或右边展示
     | FIT_END
+    // 等比缩放到能够填充控件大小，并居中展示
     | FIT_CENTER
+    // 不使用缩放，控件会展示图片的中心部分
     | CENTER
+    // 等比缩放直到完全填充整个控件，并居中显示
     | CENTER_CROP
+    // 缩放到控件大小，完全填充控件大小展示
     | FIT_XY
+    // 等比缩放到能够完整展示在控件中并居中
     | CENTER_INSIDE
 
     /**
@@ -453,10 +460,15 @@ SrcType 图片类型
  * 图片类型
  */
 public enum SrcType <: Hashable & Equatable<SrcType> & ToString {
+    // resources类型
     | MEDIA
+    // rawfile类型
     | RAWFILE
+    // URI类型,沙盒
     | URI
+    // URL，网络
     | URL
+    // byte数组
     | ARRAYBUFFER
 
     /**
@@ -500,8 +512,11 @@ TileMode图片平铺方式
  * 图片平铺方式
  */
 public enum TileMode <: Hashable & Equatable<TileMode> & ToString {
+    // 复制边缘色彩
     | CLAMP
+    // X、Y 轴进行重复图片显示
     | REPEAT
+    // 在水平和垂直方向上使用交替镜像的方式重复图片的绘制
     | MIRROR
 
     /**
@@ -526,6 +541,58 @@ public enum TileMode <: Hashable & Equatable<TileMode> & ToString {
      * @return 是否不相等
      */
     public operator func !=(that: TileMode): Bool
+
+    /**
+     * 获取toString
+     *
+     * @return toString
+     */
+    public override func toString(): String
+}
+```
+
+### enum ImgValueType
+
+ImgValueType图片显示类型
+
+```cangjie
+/**
+ * 图片显示类型
+ */
+public enum ImgValueType <: Hashable & Equatable<ImgValueType> & ToString {
+    // 圆角图片
+    | IMG_VALUE_BITMAP
+    // 椭圆图片
+    | IMG_VALUE_OVALS
+    // 颜色
+    | IMG_VALUE_COLOR
+    // 背景
+    | IMG_VALUE_BACKGROUND
+    // SVG
+    | IMG_VALUE_SVG
+
+    /**
+     * 获取hashCode
+     *
+     * @return hashCode
+     */
+    public override func hashCode(): Int64
+
+    /**
+     * 判断两个枚举是否相等
+     *
+     * @param that 其他枚举
+     * @return 是否相等
+     */
+    public operator func ==(that: ImgValueType): Bool
+
+    /**
+     * 判断两个枚举是否不相等
+     *
+     * @param that 其他枚举
+     * @return 是否不相等
+     */
+    public operator func !=(that: ImgValueType): Bool
 
     /**
      * 获取toString

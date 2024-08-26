@@ -7,10 +7,15 @@ package roundedimageview
  * 图片类型
  */
 public enum SrcType <: Hashable & Equatable<SrcType> & ToString {
+    // resources类型
     | MEDIA
+    // rawfile类型
     | RAWFILE
+    // URI类型,沙盒
     | URI
+    // URL，网络
     | URL
+    // byte数组
     | ARRAYBUFFER
 
     /**

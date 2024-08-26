@@ -122,7 +122,7 @@ class TestExamples {
             // 图片是不是SVG图片
             .setIsSvg(false)
             // 显示类型
-            .setTypeValue("Bitmap")
+            .setTypeValue(ImgValueType.IMG_VALUE_BITMAP)
             // 设置图片显示的宽度
             .setUiWidth(100.0)
             // 设置图片显示的高度
