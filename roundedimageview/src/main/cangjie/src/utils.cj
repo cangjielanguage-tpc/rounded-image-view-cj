@@ -33,3 +33,12 @@ func delPixelMap(pixelMap: ?PixelMap) {
         }
     }
 }
+
+func paddingSize(size: Float64): Float64 {
+    let padding = if(size > 0.0){
+        size
+    } else {
+        0.0
+    }
+    return padding
+}

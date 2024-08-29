@@ -80,38 +80,43 @@ public class RoundedImageView {
 
     func setImage() {
         if (let Some(v) <- img) {
+            let padding = if(model.padding > 0.0){
+                model.padding
+            } else {
+                0.0
+            }
             match (model.scaleType) {
                 case None => ()
                 case Some(ScaleType.FIT_START) => context.drawImage(v, 0.0, 0.0, srcWidth, srcHeight)
                 case Some(ScaleType.FIT_END) =>
                     context.drawImage(
                         v,
-                        (model.uiWidth - model.padding * 2.0 - srcWidth * minScale) / (minScale * 1.0),
-                        (model.uiHeight - model.padding * 2.0 - srcHeight * minScale) / (minScale * 1.0),
+                        (model.uiWidth - padding * 2.0 - srcWidth * minScale) / (minScale * 1.0),
+                        (model.uiHeight - padding * 2.0 - srcHeight * minScale) / (minScale * 1.0),
                         srcWidth,
                         srcHeight
                     )
                 case Some(ScaleType.FIT_CENTER) =>
                     context.drawImage(
                         v,
-                        (model.uiWidth - model.padding * 2.0 - srcWidth * minScale) / (minScale * 2.0),
-                        (model.uiHeight - model.padding * 2.0 - srcHeight * minScale) / (minScale * 2.0),
+                        (model.uiWidth - padding * 2.0 - srcWidth * minScale) / (minScale * 2.0),
+                        (model.uiHeight - padding * 2.0 - srcHeight * minScale) / (minScale * 2.0),
                         srcWidth,
                         srcHeight
                     )
                 case Some(ScaleType.CENTER) =>
                     context.drawImage(
                         v,
-                        (model.uiWidth - model.padding * 2.0 - srcWidth) / 2.0,
-                        (model.uiHeight - model.padding * 2.0 - srcHeight) / 2.0,
+                        (model.uiWidth - padding * 2.0 - srcWidth) / 2.0,
+                        (model.uiHeight - padding * 2.0 - srcHeight) / 2.0,
                         srcWidth,
                         srcHeight
                     )
                 case Some(ScaleType.CENTER_CROP) =>
                     context.drawImage(
                         v,
-                        (model.uiWidth - model.padding * 2.0 - srcWidth * minScale) / (minScale * 2.0),
-                        (model.uiHeight - model.padding * 2.0 - srcHeight * minScale) / (minScale * 2.0),
+                        (model.uiWidth - padding * 2.0 - srcWidth * minScale) / (minScale * 2.0),
+                        (model.uiHeight - padding * 2.0 - srcHeight * minScale) / (minScale * 2.0),
                         srcWidth,
                         srcHeight
                     )
@@ -125,8 +130,8 @@ public class RoundedImageView {
                 case Some(ScaleType.CENTER_INSIDE) =>
                     context.drawImage(
                         v,
-                        (model.uiWidth - model.padding * 2.0 - srcWidth * minScale) / (minScale * 2.0),
-                        (model.uiHeight - model.padding * 2.0 - srcHeight * minScale) / (minScale * 2.0),
+                        (model.uiWidth - padding * 2.0 - srcWidth * minScale) / (minScale * 2.0),
+                        (model.uiHeight - padding * 2.0 - srcHeight * minScale) / (minScale * 2.0),
                         srcWidth,
                         srcHeight
                     )
@@ -135,90 +140,105 @@ public class RoundedImageView {
     }
 
     func setRect() {
+        let borderWidth = if(model.borderWidth > 0.0){
+            model.borderWidth
+        } else {
+            0.0
+        }
+        let cornerRadius = if(model.cornerRadius > 0.0){
+            model.cornerRadius
+        } else {
+            0.0
+        }
+        let padding = if(model.padding > 0.0){
+            model.padding
+        } else {
+            0.0
+        }
         match (model.scaleType) {
             case None => ()
             case Some(ScaleType.FIT_START) =>
                 roundRect(
                     context,
-                    model.borderWidth / 2.0,
-                    model.borderWidth / 2.0,
-                    srcWidth * minScale - model.borderWidth,
-                    srcHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    borderWidth / 2.0,
+                    borderWidth / 2.0,
+                    srcWidth * minScale - borderWidth,
+                    srcHeight * minScale - borderWidth,
+                    cornerRadius
                 )
             case Some(ScaleType.FIT_END) =>
                 roundRect(
                     context,
-                    model.uiWidth - model.padding * 2.0 - srcWidth * minScale + model.borderWidth / 2.0,
-                    model.uiHeight - model.padding * 2.0 - srcHeight * minScale + model.borderWidth / 2.0,
-                    srcWidth * minScale - model.borderWidth,
-                    srcHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    model.uiWidth - padding * 2.0 - srcWidth * minScale + borderWidth / 2.0,
+                    model.uiHeight - padding * 2.0 - srcHeight * minScale + borderWidth / 2.0,
+                    srcWidth * minScale - borderWidth,
+                    srcHeight * minScale - borderWidth,
+                    cornerRadius
                 )
             case Some(ScaleType.FIT_CENTER) =>
                 roundRect(
                     context,
-                    (model.uiWidth - model.padding * 2.0 - srcWidth * minScale) / 2.0 + model.borderWidth / 2.0,
-                    (model.uiHeight - model.padding * 2.0 - srcHeight * minScale) / 2.0 + model.borderWidth / 2.0,
-                    srcWidth * minScale - model.borderWidth,
-                    srcHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    (model.uiWidth - padding * 2.0 - srcWidth * minScale) / 2.0 + borderWidth / 2.0,
+                    (model.uiHeight - padding * 2.0 - srcHeight * minScale) / 2.0 + borderWidth / 2.0,
+                    srcWidth * minScale - borderWidth,
+                    srcHeight * minScale - borderWidth,
+                    cornerRadius
                 )
             case Some(ScaleType.CENTER) =>
-                let x: Float64 = if (model.uiWidth - model.padding * 2.0 - srcWidth >= 0.0) {
-                    model.uiWidth - model.padding * 2.0 - srcWidth
+                let x: Float64 = if (model.uiWidth - padding * 2.0 - srcWidth >= 0.0) {
+                    model.uiWidth - padding * 2.0 - srcWidth
                 } else {
                     0.0
                 }
-                let y: Float64 = if (model.uiHeight - model.padding * 2.0 - srcHeight >= 0.0) {
-                    model.uiHeight - model.padding * 2.0 - srcHeight
+                let y: Float64 = if (model.uiHeight - padding * 2.0 - srcHeight >= 0.0) {
+                    model.uiHeight - padding * 2.0 - srcHeight
                 } else {
                     0.0
                 }
-                let w: Float64 = if (model.uiWidth - model.padding * 2.0 - srcWidth >= 0.0) {
-                    srcWidth - model.padding * 2.0
+                let w: Float64 = if (model.uiWidth - padding * 2.0 - srcWidth >= 0.0) {
+                    srcWidth - padding * 2.0
                 } else {
-                    model.uiWidth - model.padding * 2.0
+                    model.uiWidth - padding * 2.0
                 }
-                let h: Float64 = if (model.uiHeight - model.padding * 2.0 - srcHeight >= 0.0) {
-                    srcHeight - model.padding * 2.0
+                let h: Float64 = if (model.uiHeight - padding * 2.0 - srcHeight >= 0.0) {
+                    srcHeight - padding * 2.0
                 } else {
-                    model.uiHeight - model.padding * 2.0
+                    model.uiHeight - padding * 2.0
                 }
                 roundRect(
                     context,
-                    x / 2.0 + model.borderWidth / 2.0,
-                    y / 2.0 + model.borderWidth / 2.0,
-                    w - model.borderWidth,
-                    h - model.borderWidth,
-                    model.cornerRadius
+                    x / 2.0 + borderWidth / 2.0,
+                    y / 2.0 + borderWidth / 2.0,
+                    w - borderWidth,
+                    h - borderWidth,
+                    cornerRadius
                 )
             case Some(ScaleType.CENTER_CROP) =>
                 roundRect(
                     context,
-                    model.borderWidth / 2.0,
-                    model.borderWidth / 2.0,
-                    model.uiWidth - model.padding * 2.0 - model.borderWidth,
-                    model.uiHeight - model.padding * 2.0 - model.borderWidth,
-                    model.cornerRadius
+                    borderWidth / 2.0,
+                    borderWidth / 2.0,
+                    model.uiWidth - padding * 2.0 - borderWidth,
+                    model.uiHeight - padding * 2.0 - borderWidth,
+                    cornerRadius
                 )
             case Some(ScaleType.FIT_XY) =>
                 roundRect(
                     context,
-                    model.borderWidth / 2.0,
-                    model.borderWidth / 2.0,
-                    srcWidth * scaleW - model.borderWidth,
-                    srcHeight * scaleH - model.borderWidth,
-                    model.cornerRadius
+                    borderWidth / 2.0,
+                    borderWidth / 2.0,
+                    srcWidth * scaleW - borderWidth,
+                    srcHeight * scaleH - borderWidth,
+                    cornerRadius
                 )
             case Some(ScaleType.CENTER_INSIDE) =>
                 roundRect(
                     context,
-                    (model.uiWidth - model.padding * 2.0 - srcWidth * minScale) / 2.0 + model.borderWidth / 2.0,
-                    (model.uiHeight - model.padding * 2.0 - srcHeight * minScale) / 2.0 + model.borderWidth / 2.0,
-                    srcWidth * minScale - model.borderWidth,
-                    srcHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    (model.uiWidth - padding * 2.0 - srcWidth * minScale) / 2.0 + borderWidth / 2.0,
+                    (model.uiHeight - padding * 2.0 - srcHeight * minScale) / 2.0 + borderWidth / 2.0,
+                    srcWidth * minScale - borderWidth,
+                    srcHeight * minScale - borderWidth,
+                    cornerRadius
                 )
         }
     }
@@ -241,14 +261,19 @@ public class RoundedImageView {
     }
 
     func setOval() {
+        let borderWidth = if(model.borderWidth > 0.0){
+            model.borderWidth
+        } else {
+            0.0
+        }
         match (model.scaleType) {
             case None => ()
             case Some(ScaleType.FIT_START) =>
                 context.ellipse(
                     srcWidth * minScale / 2.0,
                     srcHeight * minScale / 2.0,
-                    (srcWidth * minScale - model.borderWidth) / 2.0,
-                    (srcHeight * minScale - model.borderWidth) / 2.0,
+                    (srcWidth * minScale - borderWidth) / 2.0,
+                    (srcHeight * minScale - borderWidth) / 2.0,
                     0.0,
                     0.0,
                     mathPI * 2.0
@@ -257,8 +282,8 @@ public class RoundedImageView {
                 context.ellipse(
                     model.uiWidth - srcWidth * minScale + srcWidth * minScale / 2.0,
                     srcHeight * minScale / 2.0,
-                    (srcWidth * minScale - model.borderWidth) / 2.0,
-                    (srcHeight * minScale - model.borderWidth) / 2.0,
+                    (srcWidth * minScale - borderWidth) / 2.0,
+                    (srcHeight * minScale - borderWidth) / 2.0,
                     0.0,
                     0.0,
                     mathPI * 2.0
@@ -267,8 +292,8 @@ public class RoundedImageView {
                 context.ellipse(
                     model.uiWidth / 2.0,
                     srcHeight * minScale / 2.0,
-                    (srcWidth * minScale - model.borderWidth) / 2.0,
-                    (srcHeight * minScale - model.borderWidth) / 2.0,
+                    (srcWidth * minScale - borderWidth) / 2.0,
+                    (srcHeight * minScale - borderWidth) / 2.0,
                     0.0,
                     0.0,
                     mathPI * 2.0
@@ -297,8 +322,8 @@ public class RoundedImageView {
                 context.ellipse(
                     (x + w) / 2.0,
                     (y + h) / 2.0,
-                    (w - model.borderWidth) / 2.0,
-                    (h - model.borderWidth) / 2.0,
+                    (w - borderWidth) / 2.0,
+                    (h - borderWidth) / 2.0,
                     0.0,
                     0.0,
                     mathPI * 2.0
@@ -307,8 +332,8 @@ public class RoundedImageView {
                 context.ellipse(
                     model.uiWidth / 2.0,
                     model.uiHeight / 2.0,
-                    (model.uiWidth - model.borderWidth) / 2.0,
-                    (model.uiHeight - model.borderWidth) / 2.0,
+                    (model.uiWidth - borderWidth) / 2.0,
+                    (model.uiHeight - borderWidth) / 2.0,
                     0.0,
                     0.0,
                     mathPI * 2.0
@@ -317,8 +342,8 @@ public class RoundedImageView {
                 context.ellipse(
                     model.uiWidth / 2.0,
                     model.uiHeight / 2.0,
-                    (srcWidth * scaleW - model.borderWidth) / 2.0,
-                    (srcHeight * scaleH - model.borderWidth) / 2.0,
+                    (srcWidth * scaleW - borderWidth) / 2.0,
+                    (srcHeight * scaleH - borderWidth) / 2.0,
                     0.0,
                     0.0,
                     mathPI * 2.0
@@ -327,8 +352,8 @@ public class RoundedImageView {
                 context.ellipse(
                     model.uiWidth / 2.0,
                     model.uiHeight / 2.0,
-                    (srcWidth * minScale - model.borderWidth) / 2.0,
-                    (srcHeight * minScale - model.borderWidth) / 2.0,
+                    (srcWidth * minScale - borderWidth) / 2.0,
+                    (srcHeight * minScale - borderWidth) / 2.0,
                     0.0,
                     0.0,
                     mathPI * 2.0
@@ -373,18 +398,29 @@ public class RoundedImageView {
                         img = pixelMap
                         srcWidth = Float64(width)
                         srcHeight = Float64(height)
-                        scaleW = (model.uiWidth - model.padding * 2.0) / srcWidth
-                        scaleH = (model.uiHeight - model.padding * 2.0) / srcHeight
-                        if (let Some(v) <- model.borderColor) {
-                            context.strokeStyle(v)
-                        } else if (let Some(v) <- model.borderColorUInt32) {
-                            context.strokeStyle(v)
-                        } else if (let Some(v) <- model.borderColorCanvasGradient) {
-                            context.strokeStyle(v)
+                        let padding = if(model.padding > 0.0){
+                            model.padding
+                        } else {
+                            0.0
                         }
-                        context.lineWidth(model.borderWidth)
+                        scaleW = (model.uiWidth - padding * 2.0) / srcWidth
+                        scaleH = (model.uiHeight - padding * 2.0) / srcHeight
+                        // 绘制边框
+                        if(model.borderWidth > 0.0){
+                            // 边框大于0的时候才绘制边框
+                            if (let Some(v) <- model.borderColor) {
+                                context.strokeStyle(v)
+                            } else if (let Some(v) <- model.borderColorUInt32) {
+                                context.strokeStyle(v)
+                            } else if (let Some(v) <- model.borderColorCanvasGradient) {
+                                context.strokeStyle(v)
+                            }
+                            context.lineWidth(model.borderWidth)
+                        }
                         context.save()
+                        // 图形矩阵变化
                         setImageCanvasTransform()
+                        // 图片内容绘制
                         setImage()
                         context.restore()
                         context.globalCompositeOperation(CompositeOperation.DestinationIn)
@@ -392,7 +428,9 @@ public class RoundedImageView {
                         context.fill()
                         context.globalCompositeOperation(CompositeOperation.SourceOver)
                         setRect()
-                        context.stroke()
+                        if(model.borderWidth > 0.0){
+                            context.stroke()
+                        }
                     }
                 }
         }
@@ -407,16 +445,24 @@ public class RoundedImageView {
                         img = pixelMap
                         srcWidth = Float64(width)
                         srcHeight = Float64(height)
-                        scaleW = (model.uiWidth - model.padding * 2.0) / srcWidth
-                        scaleH = (model.uiHeight - model.padding * 2.0) / srcHeight
-                        if (let Some(v) <- model.borderColor) {
-                            context.strokeStyle(v)
-                        } else if (let Some(v) <- model.borderColorUInt32) {
-                            context.strokeStyle(v)
-                        } else if (let Some(v) <- model.borderColorCanvasGradient) {
-                            context.strokeStyle(v)
+                        let padding = if(model.padding > 0.0){
+                            model.padding
+                        } else {
+                            0.0
                         }
-                        context.lineWidth(model.borderWidth)
+                        scaleW = (model.uiWidth - padding * 2.0) / srcWidth
+                        scaleH = (model.uiHeight - padding * 2.0) / srcHeight
+                        if(model.borderWidth > 0.0){
+                            // 边框大于0的时候才绘制边框
+                            if (let Some(v) <- model.borderColor) {
+                                context.strokeStyle(v)
+                            } else if (let Some(v) <- model.borderColorUInt32) {
+                                context.strokeStyle(v)
+                            } else if (let Some(v) <- model.borderColorCanvasGradient) {
+                                context.strokeStyle(v)
+                            }
+                            context.lineWidth(model.borderWidth)
+                        }
                         context.save()
                         setImageCanvasTransform()
                         setImage()
@@ -426,7 +472,9 @@ public class RoundedImageView {
                         context.fill()
                         context.globalCompositeOperation(CompositeOperation.SourceOver)
                         setOval()
-                        context.stroke()
+                        if(model.borderWidth > 0.0){
+                            context.stroke()
+                        }
                     }
                 }
         }
@@ -449,15 +497,28 @@ public class RoundedImageView {
             context.fillStyle(v)
         } else {
         }
-        if (let Some(v) <- model.borderColor) {
-            bottomLayerContext.fillStyle(v)
-        } else if (let Some(v) <- model.borderColorUInt32) {
-            bottomLayerContext.fillStyle(v)
-        } else if (let Some(v) <- model.borderColorCanvasGradient) {
-            bottomLayerContext.fillStyle(v)
-        } else {
+        if(model.borderWidth > 0.0){
+            // 边框大于0的时候才绘制边框
+            if (let Some(v) <- model.borderColor) {
+                context.strokeStyle(v)
+            } else if (let Some(v) <- model.borderColorUInt32) {
+                context.strokeStyle(v)
+            } else if (let Some(v) <- model.borderColorCanvasGradient) {
+                context.strokeStyle(v)
+            } else {
+            }
+            context.lineWidth(model.borderWidth)
         }
-        context.lineWidth(model.borderWidth)
+        let borderWidth = if(model.borderWidth > 0.0){
+            model.borderWidth
+        } else {
+            0.0
+        }
+        let cornerRadius = if(model.cornerRadius > 0.0){
+            model.cornerRadius
+        } else {
+            0.0
+        }
         match (model.scaleType) {
             case None => ()
             case Some(ScaleType.FIT_START) =>
@@ -465,23 +526,25 @@ public class RoundedImageView {
                 context.globalCompositeOperation(CompositeOperation.DestinationIn)
                 roundRect(
                     context,
-                    model.borderWidth / 2.0,
-                    model.borderWidth / 2.0,
-                    model.colorWidth * minScale - model.borderWidth,
-                    model.colorHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    borderWidth / 2.0,
+                    borderWidth / 2.0,
+                    model.colorWidth * minScale - borderWidth,
+                    model.colorHeight * minScale - borderWidth,
+                    cornerRadius
                 )
                 context.fill()
                 context.globalCompositeOperation(CompositeOperation.SourceOver)
                 roundRect(
                     context,
-                    model.borderWidth / 2.0,
-                    model.borderWidth / 2.0,
-                    model.colorWidth * minScale - model.borderWidth,
-                    model.colorHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    borderWidth / 2.0,
+                    borderWidth / 2.0,
+                    model.colorWidth * minScale - borderWidth,
+                    model.colorHeight * minScale - borderWidth,
+                    cornerRadius
                 )
-                context.stroke()
+                if(model.borderWidth > 0.0){
+                    context.stroke()
+                }
             case Some(ScaleType.FIT_END) =>
                 context.fillRect(
                     model.uiWidth - model.colorWidth * minScale,
@@ -492,23 +555,25 @@ public class RoundedImageView {
                 context.globalCompositeOperation(CompositeOperation.DestinationIn)
                 roundRect(
                     context,
-                    model.uiWidth - model.colorWidth * minScale + model.borderWidth / 2.0,
-                    model.uiHeight - model.colorHeight * minScale + model.borderWidth / 2.0,
-                    model.colorWidth * minScale - model.borderWidth,
-                    model.colorHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    model.uiWidth - model.colorWidth * minScale + borderWidth / 2.0,
+                    model.uiHeight - model.colorHeight * minScale + borderWidth / 2.0,
+                    model.colorWidth * minScale - borderWidth,
+                    model.colorHeight * minScale - borderWidth,
+                    cornerRadius
                 )
                 context.fill()
                 context.globalCompositeOperation(CompositeOperation.SourceOver)
                 roundRect(
                     context,
-                    model.uiWidth - model.colorWidth * minScale + model.borderWidth / 2.0,
-                    model.uiHeight - model.colorHeight * minScale + model.borderWidth / 2.0,
-                    model.colorWidth * minScale - model.borderWidth,
-                    model.colorHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    model.uiWidth - model.colorWidth * minScale + borderWidth / 2.0,
+                    model.uiHeight - model.colorHeight * minScale + borderWidth / 2.0,
+                    model.colorWidth * minScale - borderWidth,
+                    model.colorHeight * minScale - borderWidth,
+                    cornerRadius
                 )
-                context.stroke()
+                if(model.borderWidth > 0.0){
+                    context.stroke()
+                }
             case Some(ScaleType.FIT_CENTER) =>
                 context.fillRect(
                     (model.uiWidth - model.colorWidth * minScale) / 2.0,
@@ -519,47 +584,53 @@ public class RoundedImageView {
                 context.globalCompositeOperation(CompositeOperation.DestinationIn)
                 roundRect(
                     context,
-                    (model.uiWidth - model.colorWidth * minScale) / 2.0 + model.borderWidth / 2.0,
-                    (model.uiHeight - model.colorHeight * minScale) / 2.0 + model.borderWidth / 2.0,
-                    model.colorWidth * minScale - model.borderWidth,
-                    model.colorHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    (model.uiWidth - model.colorWidth * minScale) / 2.0 + borderWidth / 2.0,
+                    (model.uiHeight - model.colorHeight * minScale) / 2.0 + borderWidth / 2.0,
+                    model.colorWidth * minScale - borderWidth,
+                    model.colorHeight * minScale - borderWidth,
+                    cornerRadius
                 )
                 context.fill()
                 context.globalCompositeOperation(CompositeOperation.SourceOver)
                 roundRect(
                     context,
-                    (model.uiWidth - model.colorWidth * minScale) / 2.0 + model.borderWidth / 2.0,
-                    (model.uiHeight - model.colorHeight * minScale) / 2.0 + model.borderWidth / 2.0,
-                    model.colorWidth * minScale - model.borderWidth,
-                    model.colorHeight * minScale - model.borderWidth,
-                    model.cornerRadius
+                    (model.uiWidth - model.colorWidth * minScale) / 2.0 + borderWidth / 2.0,
+                    (model.uiHeight - model.colorHeight * minScale) / 2.0 + borderWidth / 2.0,
+                    model.colorWidth * minScale - borderWidth,
+                    model.colorHeight * minScale - borderWidth,
+                    cornerRadius
                 )
-                context.stroke()
+                if(model.borderWidth > 0.0){
+                    context.stroke()
+                }
             case _ =>
                 context.fillRect(0.0, 0.0, model.uiWidth, model.uiHeight)
                 context.globalCompositeOperation(CompositeOperation.DestinationIn)
                 roundRect(
                     context,
-                    model.borderWidth / 2.0,
-                    model.borderWidth / 2.0,
-                    model.uiWidth - model.borderWidth,
-                    model.uiHeight - model.borderWidth,
-                    model.cornerRadius
+                    borderWidth / 2.0,
+                    borderWidth / 2.0,
+                    model.uiWidth - borderWidth,
+                    model.uiHeight - borderWidth,
+                    cornerRadius
                 )
                 context.fill()
                 context.globalCompositeOperation(CompositeOperation.SourceOver)
                 roundRect(
                     context,
-                    model.borderWidth / 2.0,
-                    model.borderWidth / 2.0,
-                    model.uiWidth - model.borderWidth,
-                    model.uiHeight - model.borderWidth,
-                    model.cornerRadius
+                    borderWidth / 2.0,
+                    borderWidth / 2.0,
+                    model.uiWidth - borderWidth,
+                    model.uiHeight - borderWidth,
+                    cornerRadius
                 )
-                context.stroke()
+                if(model.borderWidth > 0.0){
+                    context.stroke()
+                }
         }
-        context.stroke()
+        if(model.borderWidth > 0.0){
+            context.stroke()
+        }
     }
 
     private func drawBackground() {
@@ -570,35 +641,50 @@ public class RoundedImageView {
         } else if (let Some(v) <- model.backgroundColorCanvasGradient) {
             bottomLayerContext.fillStyle(v)
         }
-        if (let Some(v) <- model.borderColor) {
-            bottomLayerContext.strokeStyle(v)
-        } else if (let Some(v) <- model.borderColorUInt32) {
-            bottomLayerContext.strokeStyle(v)
-        } else if (let Some(v) <- model.borderColorCanvasGradient) {
-            bottomLayerContext.strokeStyle(v)
+        if(model.borderWidth > 0.0){
+            // 边框大于0的时候才绘制边框
+            if (let Some(v) <- model.borderColor) {
+                bottomLayerContext.strokeStyle(v)
+            } else if (let Some(v) <- model.borderColorUInt32) {
+                bottomLayerContext.strokeStyle(v)
+            } else if (let Some(v) <- model.borderColorCanvasGradient) {
+                bottomLayerContext.strokeStyle(v)
+            }
+            bottomLayerContext.lineWidth(model.borderWidth)
         }
-        bottomLayerContext.lineWidth(model.borderWidth)
         bottomLayerContext.fillRect(0.0, 0.0, model.uiWidth, model.uiHeight)
         bottomLayerContext.globalCompositeOperation(CompositeOperation.DestinationIn)
+        let borderWidth = if(model.borderWidth > 0.0){
+            model.borderWidth
+        } else {
+            0.0
+        }
+        let cornerRadius = if(model.cornerRadius > 0.0){
+            model.cornerRadius
+        } else {
+            0.0
+        }
         roundRect(
             bottomLayerContext,
-            model.borderWidth / 2.0,
-            model.borderWidth / 2.0,
-            model.uiWidth - model.borderWidth,
-            model.uiHeight - model.borderWidth,
-            model.cornerRadius
+            borderWidth / 2.0,
+            borderWidth / 2.0,
+            model.uiWidth - borderWidth,
+            model.uiHeight - borderWidth,
+            cornerRadius
         )
         bottomLayerContext.fill()
         bottomLayerContext.globalCompositeOperation(CompositeOperation.SourceOver)
         roundRect(
             bottomLayerContext,
-            model.borderWidth / 2.0,
-            model.borderWidth / 2.0,
-            model.uiWidth - model.borderWidth,
-            model.uiHeight - model.borderWidth,
-            model.cornerRadius
+            borderWidth / 2.0,
+            borderWidth / 2.0,
+            model.uiWidth - borderWidth,
+            model.uiHeight - borderWidth,
+            cornerRadius
         )
-        bottomLayerContext.stroke()
+        if(model.borderWidth > 0.0){
+            bottomLayerContext.stroke()
+        }
     }
 
     func build() {
@@ -636,7 +722,7 @@ public class RoundedImageView {
                                 => drawBitmap()
                             })
                     }
-                    .padding(model.padding)
+                    .padding(paddingSize(model.padding))
                 }
                 .width(model.uiWidth)
                 .height(model.uiHeight)
