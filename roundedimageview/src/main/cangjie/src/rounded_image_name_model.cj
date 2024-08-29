@@ -64,6 +64,8 @@ public class RoundedImageNameModel {
      */
     public func setImageSrc(src: ?String): RoundedImageNameModel {
         this.src = src
+        this.srcArray = None
+        this.srcResource = None
         return this
     }
 
@@ -75,6 +77,8 @@ public class RoundedImageNameModel {
      */
     public func setImageSrc(srcArray: ?Array<Byte>): RoundedImageNameModel {
         this.srcArray = srcArray
+        this.src = None
+        this.srcResource = None
         return this
     }
 
@@ -86,6 +90,8 @@ public class RoundedImageNameModel {
      */
     public func setImageSrc(srcResource: ?CJResource): RoundedImageNameModel {
         this.srcResource = srcResource
+        this.src = None
+        this.srcArray = None
         return this
     }
 
@@ -264,6 +270,8 @@ public class RoundedImageNameModel {
      */
     public func setBackgroundColor(backgroundColor: ?Color): RoundedImageNameModel {
         this.backgroundColor = backgroundColor
+        this.backgroundColorUInt32 = None
+        this.backgroundColorCanvasGradient = None
         return this
     }
 
@@ -275,6 +283,8 @@ public class RoundedImageNameModel {
      */
     public func setBackgroundColor(backgroundColorUInt32: ?UInt32): RoundedImageNameModel {
         this.backgroundColorUInt32 = backgroundColorUInt32
+        this.backgroundColor = None
+        this.backgroundColorCanvasGradient = None
         return this
     }
 
@@ -286,6 +296,8 @@ public class RoundedImageNameModel {
      */
     public func setBackgroundColor(backgroundColorCanvasGradient: ?CanvasGradient): RoundedImageNameModel {
         this.backgroundColorCanvasGradient = backgroundColorCanvasGradient
+        this.backgroundColor = None
+        this.backgroundColorUInt32 = None
         return this
     }
 
@@ -364,6 +376,8 @@ public class RoundedImageNameModel {
      */
     public func setBorderColor(borderColor: ?Color): RoundedImageNameModel {
         this.borderColor = borderColor
+        this.borderColorUInt32 = None
+        this.borderColorCanvasGradient = None
         return this
     }
 
@@ -375,6 +389,8 @@ public class RoundedImageNameModel {
      */
     public func setBorderColor(borderColorUInt32: ?UInt32): RoundedImageNameModel {
         this.borderColorUInt32 = borderColorUInt32
+        this.borderColor = None
+        this.borderColorCanvasGradient = None
         return this
     }
 
@@ -386,6 +402,8 @@ public class RoundedImageNameModel {
      */
     public func setBorderColor(borderColorCanvasGradient: ?CanvasGradient): RoundedImageNameModel {
         this.borderColorCanvasGradient = borderColorCanvasGradient
+        this.borderColor = None
+        this.borderColorUInt32 = None
         return this
     }
 
