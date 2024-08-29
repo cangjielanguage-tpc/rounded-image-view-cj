@@ -248,7 +248,7 @@ public class RoundedImageNameModel {
     public func getBackgroundColorCanvasGradient(): ?CanvasGradient
 
     /**
-     * 设置圆角大小
+     * 设置圆角大小。设置圆角角半径为负数的时候，默认设置为0。分别设置四个圆角半径的时候，优先显示单独设置四个圆角半径。当设置值为负数或0的时候，通用圆角半径才生效
      *
      * @param cornerRadius 圆角大小
      * @return RoundedImageNameModel对象
@@ -261,9 +261,69 @@ public class RoundedImageNameModel {
      * @return 圆角大小
      */
     public func getCornerRadius(): Float64
+    
+    /**
+     * 设置圆角左上大小。设置圆角左上角半径为负数的时候，默认设置为0。
+     *
+     * @param cornerLeftTopRadius 圆角左上大小
+     * @return RoundedImageNameModel对象
+     */
+    public func setCornerLeftTopRadius(cornerLeftTopRadius: Float64): RoundedImageNameModel
 
     /**
-     * 设置边框宽度
+     * 获取圆角左上大小
+     *
+     * @return 圆角左上大小
+     */
+    public func getCornerLeftTopRadius(): Float64
+
+    /**
+     * 设置圆角左下大小。设置圆角左下角半径为负数的时候，默认设置为0。
+     *
+     * @param cornerLeftBottomRadius 圆角左下大小
+     * @return RoundedImageNameModel对象
+     */
+    public func setCornerLeftBottomRadius(cornerLeftBottomRadius: Float64): RoundedImageNameModel
+
+    /**
+     * 获取圆角左下大小
+     *
+     * @return 圆角左下大小
+     */
+    public func getCornerLeftBottomRadius(): Float64
+
+    /**
+     * 设置圆角右上大小。设置圆角右上角半径为负数的时候，默认设置为0。
+     *
+     * @param cornerRightTopRadius 圆角右上大小
+     * @return RoundedImageNameModel对象
+     */
+    public func setCornerRightTopRadius(cornerRightTopRadius: Float64): RoundedImageNameModel
+
+    /**
+     * 获取圆角右上大小
+     *
+     * @return 圆角右上大小
+     */
+    public func getCornerRightTopRadius(): Float64
+
+    /**
+     * 设置圆角右下大小。设置圆角右下角半径为负数的时候，默认设置为0。
+     *
+     * @param cornerRightBottomRadius 圆角右下大小
+     * @return RoundedImageNameModel对象
+     */
+    public func setCornerRightBottomRadius(cornerRightBottomRadius: Float64): RoundedImageNameModel
+
+    /**
+     * 获取圆角右下大小
+     *
+     * @return 圆角右下大小
+     */
+    public func getCornerRightBottomRadius(): Float64
+
+    /**
+     * 设置边框宽度。设置边框宽度为负数的时候，默认设置为0。
      *
      * @param borderWidth 边框宽度
      * @return RoundedImageNameModel对象
@@ -323,7 +383,7 @@ public class RoundedImageNameModel {
     public func getBorderColorCanvasGradient(): ?CanvasGradient
 
     /**
-     * 设置内边距大小
+     * 设置内边距大小。设置内边距大小为负数的时候，默认设置为0。
      *
      * @param padding 内边距大小
      * @return RoundedImageNameModel对象

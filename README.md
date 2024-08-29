@@ -22,7 +22,7 @@ roundedImageView4cj支持圆角（和椭圆或圆形）的快速 ImageView。
 2. 支持图片显示为椭圆并带边框
 3. 支持Color类型显示并带边框
 4. 支持Background类型显示并带边框
-5. 支持svg图片显示并带边框
+5. 支持svg图片显示并带边框 - 暂未支持
 6. 支持设置ScaleType七种缩放类型
 7. 支持设置TileMode三种背景平铺类型
 8. 支持路径uri、media、本地rawfile、网络url等相关数据绘制
@@ -65,7 +65,7 @@ roundedImageView4cj支持圆角（和椭圆或圆形）的快速 ImageView。
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](doc/feature_api)
+主要类和函数接口说明详见 [API](doc/feature_api.md)
 
 ## 使用说明
 
@@ -152,17 +152,17 @@ class TestExamples {
 
 ### 预览效果
 
-<img src="./doc/image/image_bitmap.jpeg" width="50%"/>
+<img src="./doc/image/image_bitmap.png" width="50%"/>
 
-<img src="./doc/image/image_ovals.jpeg" width="50%"/>
+<img src="./doc/image/image_ovals.png" width="50%"/>
 
-<img src="./doc/image/image_color.jpeg" width="50%"/>
+<img src="./doc/image/image_color.png" width="50%"/>
 
-<img src="./doc/image/image_background.jpeg" width="50%"/>
+<img src="./doc/image/image_background.png" width="50%"/>
 
 ## 约束与限制
 
-当前基于 deveco-studio-5.0.3.600 版本实现的
+1. 当前基于 deveco-studio-5.0.3.500 版本实现的
 
 ## 开源协议
 
