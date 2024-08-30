@@ -572,11 +572,11 @@ TileMode图片平铺方式
  * 图片平铺方式
  */
 public enum TileMode <: Hashable & Equatable<TileMode> & ToString {
-    // 复制边缘色彩
+    // 原图显示
     | CLAMP
-    // X、Y 轴进行重复图片显示
+    // 图片重复显示
     | REPEAT
-    // 在水平和垂直方向上使用交替镜像的方式重复图片的绘制
+    // 图片镜像显示
     | MIRROR
 
     /**
