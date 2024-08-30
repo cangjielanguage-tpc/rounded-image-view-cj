@@ -244,6 +244,50 @@ public class RoundedImageView {
     }
 
     func roundRect(context: CanvasRenderingContext2D, x: Float64, y: Float64, w: Float64, h: Float64, r: Float64) {
+        var cornerLeftTopRadius = if (model.cornerLeftTopRadius > 0.0) {
+            model.cornerLeftTopRadius
+        } else {
+            0.0
+        }
+        if (w < 2.0 * cornerLeftTopRadius) {
+            cornerLeftTopRadius = w / 2.0
+        }
+        if (h < 2.0 * cornerLeftTopRadius) {
+            cornerLeftTopRadius = h / 2.0
+        }
+        var cornerLeftBottomRadius = if (model.cornerLeftBottomRadius > 0.0) {
+            model.cornerLeftBottomRadius
+        } else {
+            0.0
+        }
+        if (w < 2.0 * cornerLeftBottomRadius) {
+            cornerLeftBottomRadius = w / 2.0
+        }
+        if (h < 2.0 * cornerLeftBottomRadius) {
+            cornerLeftBottomRadius = h / 2.0
+        }
+        var cornerRightTopRadius = if (model.cornerRightTopRadius > 0.0) {
+            model.cornerRightTopRadius
+        } else {
+            0.0
+        }
+        if (w < 2.0 * cornerRightTopRadius) {
+            cornerRightTopRadius = w / 2.0
+        }
+        if (h < 2.0 * cornerRightTopRadius) {
+            cornerRightTopRadius = h / 2.0
+        }
+        var cornerRightBottomRadius = if (model.cornerRightBottomRadius > 0.0) {
+            model.cornerRightBottomRadius
+        } else {
+            0.0
+        }
+        if (w < 2.0 * cornerRightBottomRadius) {
+            cornerRightBottomRadius = w / 2.0
+        }
+        if (h < 2.0 * cornerRightBottomRadius) {
+            cornerRightBottomRadius = h / 2.0
+        }
         var r1 = r
         if (w < 2.0 * r1) {
             r1 = w / 2.0
@@ -251,12 +295,39 @@ public class RoundedImageView {
         if (h < 2.0 * r1) {
             r1 = h / 2.0
         }
+        cornerLeftTopRadius = if (cornerLeftTopRadius == 0.0) {
+            r1
+        } else {
+            cornerLeftTopRadius
+        }
+        cornerLeftBottomRadius = if (cornerLeftBottomRadius == 0.0) {
+            r1
+        } else {
+            cornerLeftBottomRadius
+        }
+        cornerRightTopRadius = if (cornerRightTopRadius == 0.0) {
+            r1
+        } else {
+            cornerRightTopRadius
+        }
+        cornerRightBottomRadius = if (cornerRightBottomRadius == 0.0) {
+            r1
+        } else {
+            cornerRightBottomRadius
+        }
+        // 创建一个新的绘制路径
         context.beginPath()
-        context.moveTo(x + r1, y)
-        context.arcTo(x + w, y, x + w, y + h, r1)
-        context.arcTo(x + w, y + h, x, y + h, r1)
-        context.arcTo(x, y + h, x, y, r1)
-        context.arcTo(x, y, x + w, y, r1)
+        // 路径从当前点移动到指定点
+        context.moveTo(x + cornerLeftTopRadius, y)
+        // 右上圆角
+        context.arcTo(x + w, y, x + w, y + h, cornerRightTopRadius)
+        // 右下圆角
+        context.arcTo(x + w, y + h, x, y + h, cornerRightBottomRadius)
+        // 左下圆角
+        context.arcTo(x, y + h, x, y, cornerLeftBottomRadius)
+        // 左上圆角
+        context.arcTo(x, y, x + w, y, cornerLeftTopRadius)
+        // 结束当前路径形成一个封闭路径
         context.closePath()
     }
 
