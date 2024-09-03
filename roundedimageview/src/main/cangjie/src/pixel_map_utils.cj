@@ -25,7 +25,7 @@ class PixelMapUtils {
                         if (let Some(v) <- src) {
                             dataArray = resourceManager.getMediaByName(v, 0)
                         } else if (let Some(v) <- srcResource) {
-                            dataArray = resourceManager.getMediaContent(UInt32(v.id), 0)
+                            dataArray = resourceManager.getMediaContent(Int32(v.id), 0)
                         }
                     case Some(SrcType.RAWFILE) =>
                         if (let Some(v) <- src) {
