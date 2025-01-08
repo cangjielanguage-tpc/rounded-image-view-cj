@@ -1,5 +1,5 @@
 <div align="center">
-<h1>roundedImageView4cj</h1>
+<h1>rounded-image-view-cj</h1>
 </div>
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 ## 介绍
 
-roundedImageView4cj支持圆角（和椭圆或圆形）的快速 ImageView。
+rounded-image-view-cj支持圆角（和椭圆或圆形）的快速 ImageView。
 
 它支持许多附加功能，包括椭圆、圆角矩形、ScaleTypes 和 TileModes。
 
@@ -162,7 +162,7 @@ class TestExamples {
 
 ## 约束与限制
 
-1. 当前基于 deveco-studio-5.0.3.500 版本实现的
+1. 当前基于 DevEco Studio 5.0.5.306 和 DevEco Studio Cangjie Plugin Beta1 5.0.5.306 版本实现的
 
 ## 开源协议
 
