@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.53.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.53.18-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -162,7 +162,7 @@ class TestExamples {
 
 ## 约束与限制
 
-1. 当前基于 DevEco Studio 5.0.5.306 和 DevEco Studio Cangjie Plugin Beta1 5.0.5.306 版本实现的
+1. 当前基于 DevEco Studio 5.0.2 Beta1 和 DevEco Studio-Cangjie Plugin 5.0.7.100 Beta1 版本实现的
 
 ## 开源协议
 
