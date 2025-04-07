@@ -88,10 +88,10 @@ rounded-image-view-cj支持圆角（和椭圆或圆形）的快速 ImageView。
          }
        }
        ```
-    4. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加 roundedimageview = {path = "../../../../roundedimageview/src/main/cangjie", version = "1.0.0"}
+    4. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
        ```toml
-       [dependencies]
-           roundedimageview = {path = "../../../../roundedimageview/src/main/cangjie", version = "1.0.0"}
+        [dependencies.roundedimageview]
+          path = "../../../../roundedimageview/src/main/cangjie"
        ```
     5. 在项目中使用 import roundedimageview.* 引用roundedimageview项目
        ```cangjie
@@ -162,7 +162,9 @@ class TestExamples {
 
 ## 约束与限制
 
-1. 当前基于 DevEco Studio 5.0.2 Beta1 和 DevEco Studio-Cangjie Plugin 5.0.7.100 Beta1 版本实现的
+当前基于 DevEco Studio for Windows 5.0.9.300 和 DevEco Studio Cangjie Plugin Beta1 for Windows 5.0.9.300 版本实现的
+
+1. 暂不支持SVG图片
 
 ## 开源协议
 
