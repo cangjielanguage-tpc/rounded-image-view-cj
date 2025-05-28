@@ -162,7 +162,7 @@ class TestExamples {
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.0.9.300 和 DevEco Studio Cangjie Plugin Beta1 for Windows 5.0.9.300 版本实现的
+当前基于 DevEco Studio for Windows 5.0.13.100 和 DevEco Studio Cangjie Plugin Canary for Windows 5.0.13.100 版本实现的
 
 1. 暂不支持SVG图片
 

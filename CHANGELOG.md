@@ -1,5 +1,9 @@
 # 0.0.1
 
+1. 适配 DevEco Studio for Windows 5.0.13.100 和 DevEco Studio Cangjie Plugin Canary for Windows 5.0.13.100 版本
+
+# 0.0.1
+
 1. 支持图片显示为圆角矩形并带边框
 2. 支持图片显示为椭圆并带边框
 3. 支持Color类型显示并带边框
