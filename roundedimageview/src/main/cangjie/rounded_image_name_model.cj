@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package roundedimageview
 
 /**
@@ -9,7 +6,7 @@ package roundedimageview
 public class RoundedImageNameModel {
     var src: ?String = None
     var srcArray: ?Array<Byte> = None
-    var srcResource: ?CJResource = None
+    var srcResource: ?AppResource = None
     var srcType: ?SrcType = None
     var isSvg: Bool = false
     var typeValue: ImgValueType = ImgValueType.IMG_VALUE_BITMAP
@@ -32,7 +29,7 @@ public class RoundedImageNameModel {
     var padding: Float64 = 0.0
     var colorWidth: Float64 = 0.0
     var colorHeight: Float64 = 0.0
-    var context: ?AbilityContext = None
+    var context: ?UIAbilityContext = None
 
     /**
      * 初始化RoundedImageNameModel
@@ -46,7 +43,7 @@ public class RoundedImageNameModel {
      * @param context 上下文
      * @return RoundedImageNameModel对象
      */
-    public func setContext(context: AbilityContext): RoundedImageNameModel {
+    public func setContext(context: UIAbilityContext): RoundedImageNameModel {
         this.context = context
         return this
     }
@@ -56,7 +53,7 @@ public class RoundedImageNameModel {
      *
      * @return 上下文
      */
-    public func getContext(): ?AbilityContext {
+    public func getContext(): ?UIAbilityContext {
         return this.context
     }
 
@@ -92,7 +89,7 @@ public class RoundedImageNameModel {
      * @param srcResource 图片resources资源
      * @return RoundedImageNameModel对象
      */
-    public func setImageSrc(srcResource: ?CJResource): RoundedImageNameModel {
+    public func setImageSrc(srcResource: ?AppResource): RoundedImageNameModel {
         this.srcResource = srcResource
         this.src = None
         this.srcArray = None
@@ -122,7 +119,7 @@ public class RoundedImageNameModel {
      *
      * @return 图片数据源
      */
-    public func getImageSrcResource(): ?CJResource {
+    public func getImageSrcResource(): ?AppResource {
         return this.srcResource
     }
 

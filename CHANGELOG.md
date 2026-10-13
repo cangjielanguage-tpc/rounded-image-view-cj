@@ -1,4 +1,10 @@
-# 0.0.1
+# 0.0.3
+
+1. 适配 DevEco Studio for Windows 5.1.1.851 版本
+2. 上下文类型由 AbilityContext 调整为 UIAbilityContext
+3. 资源类型由 CJResource 调整为 AppResource
+
+# 0.0.2
 
 1. 适配 DevEco Studio for Windows 5.0.13.100 和 DevEco Studio Cangjie Plugin Canary for Windows 5.0.13.100 版本
 

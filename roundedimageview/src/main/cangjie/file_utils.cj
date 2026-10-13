@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package roundedimageview
 
 class FileUtils {
@@ -75,12 +72,12 @@ class FileUtils {
         try {
             let fd = FileFs.open(path, mode: 0o2)
             let length = FileFs.stat(path).size
-            let buf = Array<Byte>(length, item: 0)
+            let buf = Array<Byte>(length, repeat: 0)
             FileFs.read(fd.fd, buf)
             return buf
         } catch (e: Exception) {
             AppLog.error("FileUtils readFilePic error: ${e}")
-            return Array<Byte>(0, item: 0)
+            return Array<Byte>(0, repeat: 0)
         }
     }
 

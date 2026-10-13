@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package roundedimageview
 
 class DownloadUtils {
@@ -27,12 +24,12 @@ class DownloadUtils {
             } else {
                 2048
             }
-            var arrDataTemp: Array<UInt8> = Array<UInt8>(bodySize, item: 0)
+            var arrDataTemp: Array<UInt8> = Array<UInt8>(bodySize, repeat: 0)
             let listbuf: ArrayList<UInt8> = ArrayList<UInt8>()
             var read: Int64 = 0
             do {
                 read = inputStream.read(arrDataTemp)
-                listbuf.appendAll(arrDataTemp[0..read])
+                listbuf.add(all: arrDataTemp[0..read])
             } while (read > 0)
             arrayBuffer = listbuf.toArray()
         } catch (_) {

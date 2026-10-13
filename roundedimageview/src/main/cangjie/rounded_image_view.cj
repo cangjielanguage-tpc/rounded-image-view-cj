@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package roundedimageview
 
 import ohos.state_macro_manage.*
@@ -39,7 +36,7 @@ public class RoundedImageView {
     @State
     var scaleH: Float64 = 0.0
 
-    let mathPI: Float64 = Float64.PI
+    let mathPI: Float64 = Float64.getPI()
 
     /**
      * 线程

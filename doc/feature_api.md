@@ -8,7 +8,7 @@ RoundedImageView预览自定义控件
 
 ```cangjie
 /**
- * roundedimageview预览自定义控件
+ * RoundedImageView预览自定义控件
  */
 @Component
 public class RoundedImageView {
@@ -17,7 +17,7 @@ public class RoundedImageView {
     *
     * @param model 传入roundedimageview配置内容
     */
-    RoundedImageView(model: model)
+    RoundedImageView(model: RoundedImageNameModel)
 }
 ```
 
@@ -43,14 +43,14 @@ public class RoundedImageNameModel {
      * @param context 上下文
      * @return RoundedImageNameModel对象
      */
-    public func setContext(context: AbilityContext): RoundedImageNameModel
+    public func setContext(context: UIAbilityContext): RoundedImageNameModel
 
     /**
      * 获取上下文
      *
      * @return 上下文
      */
-    public func getContext(): ?AbilityContext
+    public func getContext(): ?UIAbilityContext
 
     /**
      * 设置图片数据源
@@ -74,7 +74,7 @@ public class RoundedImageNameModel {
      * @param srcResource 图片resources资源
      * @return RoundedImageNameModel对象
      */
-    public func setImageSrc(srcResource: ?CJResource): RoundedImageNameModel
+    public func setImageSrc(srcResource: ?AppResource): RoundedImageNameModel
 
     /**
      * 获取图片数据源
@@ -95,7 +95,7 @@ public class RoundedImageNameModel {
      *
      * @return 图片数据源
      */
-    public func getImageSrcResource(): ?CJResource
+    public func getImageSrcResource(): ?AppResource
 
     /**
      * 设置图片类型
@@ -130,7 +130,7 @@ public class RoundedImageNameModel {
     /**
      * 设置显示类型
      *
-     * @param typeValue 显示类型。(Bitmap:圆角图片类型)(Ovals:椭圆形图片类型)(Color:颜色类型)(Background:带有背景的类型)(SVG:SVG类型)
+     * @param typeValue 显示类型，默认Bitmap。(Bitmap:圆角图片类型)(Ovals:椭圆形图片类型)(Color:颜色类型)(Background:带有背景的类型)(SVG:SVG类型)
      * @return RoundedImageNameModel对象
      */
     public func setTypeValue(typeValue: ImgValueType): RoundedImageNameModel
@@ -145,7 +145,7 @@ public class RoundedImageNameModel {
     /**
      * 设置控件宽度
      *
-     * @param 控件宽度
+     * @param uiWidth 控件宽度
      * @return RoundedImageNameModel对象
      */
     public func setUiWidth(uiWidth: Float64): RoundedImageNameModel
@@ -160,7 +160,7 @@ public class RoundedImageNameModel {
     /**
      * 设置控件高度
      *
-     * @param 控件高度
+     * @param uiHeight 控件高度
      * @return RoundedImageNameModel对象
      */
     public func setUiHeight(uiHeight: Float64): RoundedImageNameModel
@@ -439,23 +439,23 @@ GlobalContext上下文
  */
 public class GlobalContext {
     /**
-     * 单列获取对象
+     * 单例获取对象
      */
     public static func getContext(): GlobalContext
 
     /**
      * 获取上下文对象
      */
-    public func getAbilityContext(): ?AbilityContext
+    public func getUIAbilityContext(): ?UIAbilityContext
 
     /**
      * 设置上下文对象
      */
-    public func setAbilityContext(objectClass: AbilityContext): Unit
+    public func setUIAbilityContext(objectClass: UIAbilityContext): Unit
 }
 ```
 
-### enum ScaleType 
+### enum ScaleType
 
 ScaleType图片缩放类型
 
