@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package roundedimageview
 
 /**
@@ -8,7 +5,7 @@ package roundedimageview
  */
 public class GlobalContext {
     private static var instance: ?GlobalContext = Option<GlobalContext>.None
-    private var _objects = HashMap<String, AbilityContext>()
+    private var _objects = HashMap<String, UIAbilityContext>()
 
     private init() {}
 
@@ -26,14 +23,14 @@ public class GlobalContext {
     /**
      * 获取上下文对象
      */
-    public func getAbilityContext(): ?AbilityContext {
+    public func getUIAbilityContext(): ?UIAbilityContext {
         return this._objects.get("context")
     }
 
     /**
      * 设置上下文对象
      */
-    public func setAbilityContext(objectClass: AbilityContext): Unit {
-        this._objects.put("context", objectClass)
+    public func setUIAbilityContext(objectClass: UIAbilityContext): Unit {
+        this._objects.add("context", objectClass)
     }
 }

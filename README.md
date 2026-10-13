@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v0.0.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v0.53.18-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -22,7 +22,7 @@ rounded-image-view-cj支持圆角（和椭圆或圆形）的快速 ImageView。
 2. 支持图片显示为椭圆并带边框
 3. 支持Color类型显示并带边框
 4. 支持Background类型显示并带边框
-5. 支持svg图片显示并带边框 - 暂未支持
+5. 支持SVG图片显示并带边框（暂未支持）
 6. 支持设置ScaleType七种缩放类型
 7. 支持设置TileMode三种背景平铺类型
 8. 支持路径uri、media、本地rawfile、网络url等相关数据绘制
@@ -43,7 +43,6 @@ rounded-image-view-cj支持圆角（和椭圆或圆形）的快速 ImageView。
 │  └─src
 │      └─main
 │          ├─cangjie
-│          │  └─src
 │          └─resources
 └─hvigor
 
@@ -88,10 +87,10 @@ rounded-image-view-cj支持圆角（和椭圆或圆形）的快速 ImageView。
          }
        }
        ```
-    4. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
+    4. 修改自身应用 entry 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
        ```toml
         [dependencies.roundedimageview]
-          path = "../../../../roundedimageview/src/main/cangjie"
+          path = "${roundedimageview}"
        ```
     5. 在项目中使用 import roundedimageview.* 引用roundedimageview项目
        ```cangjie
@@ -162,7 +161,7 @@ class TestExamples {
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.0.13.100 和 DevEco Studio Cangjie Plugin Canary for Windows 5.0.13.100 版本实现的
+当前基于 DevEco Studio for Windows 5.1.1.851 版本实现的
 
 1. 暂不支持SVG图片
 
