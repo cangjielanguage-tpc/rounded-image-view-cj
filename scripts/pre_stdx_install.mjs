@@ -8,13 +8,13 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, '../roundedimageview');
 
-const ARM64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie-stdx-bin/releases/download/v1.0.1.1/cangjie-stdx-ohos-aarch64-1.0.1.1.zip';
-const ARM64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, 'cangjie-stdx-ohos-aarch64-1.0.1.1.zip');
-const ARM64_ZIP_SHA256 = '94b0db59e7591eb166d48114e512e0b64fef4b48dbb9a2aff0e8a1029e6d8db9';
+const ARM64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie_stdx/releases/download/v1.1.3.1/cangjie-stdx-ohos-aarch64-1.1.3.1.zip';
+const ARM64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, 'cangjie-stdx-ohos-aarch64-1.1.3.1.zip');
+const ARM64_ZIP_SHA256 = '21f452444d7f7106c2a7e376aa335a1e6d4308453ac1d7ad699f2fbf93ff5528';
 
-const X64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie-stdx-bin/releases/download/v1.0.1.1/cangjie-stdx-ohos-x64-1.0.1.1.zip';
-const X64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, 'cangjie-stdx-ohos-x64-1.0.1.1.zip');
-const X64_ZIP_SHA256 = '570480aa282e8366ce8f18ef0dca0c228e40a202ff4ccdebbfcc10a96d43a571';
+const X64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie_stdx/releases/download/v1.1.3.1/cangjie-stdx-ohos-x64-1.1.3.1.zip';
+const X64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, 'cangjie-stdx-ohos-x64-1.1.3.1.zip');
+const X64_ZIP_SHA256 = '822be67189eaef7d856f2d3bde8fdb68b82bfc44b6a3a67a01a93b40e6fe90ff';
 
 // 仅校验项目内的 stdx 库，不读取任何本地环境变量
 const STDX_BIN_PATH = path.join(PROJECT_ROOT, 'stdx_bin');
@@ -28,8 +28,8 @@ function hasArchBinaries(basePath, archDir) {
 }
 
 function hasStdxBinaries(basePath) {
-    return hasArchBinaries(basePath, 'linux_ohos_aarch64_llvm') &&
-        hasArchBinaries(basePath, 'linux_ohos_x86_64_llvm');
+    return hasArchBinaries(basePath, 'linux_ohos_aarch64_cjnative') &&
+        hasArchBinaries(basePath, 'linux_ohos_x86_64_cjnative');
 }
 
 function sha256(filePath) {

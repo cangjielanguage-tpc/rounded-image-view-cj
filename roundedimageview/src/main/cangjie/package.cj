@@ -8,6 +8,7 @@ internal import std.math.*
 
 internal import stdx.net.http.*
 internal import stdx.net.tls.*
+internal import stdx.net.tls.common.*
 
 internal import ohos.base.*
 internal import ohos.component.*
