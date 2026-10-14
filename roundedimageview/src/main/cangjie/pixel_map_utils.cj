@@ -1,10 +1,7 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package roundedimageview
 
 class PixelMapUtils {
-    static func createPixelMap(src: ?String, srcResource: ?CJResource, srcArray: ?Array<Byte>, srcType: ?SrcType, isSvg: Bool, callback: (?PixelMap, Int64, Int64, Bool) -> Unit, context: ?AbilityContext): Future<Unit> {
+    static func createPixelMap(src: ?String, srcResource: ?AppResource, srcArray: ?Array<Byte>, srcType: ?SrcType, isSvg: Bool, callback: (?PixelMap, Int64, Int64, Bool) -> Unit, context: ?UIAbilityContext): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var strUri: ?String = Option<String>.None
             var dataArray: ?Array<Byte> = Option<Array<Byte>>.None
@@ -93,11 +90,11 @@ class PixelMapUtils {
         return fut
     }
 
-    private static func getResourceManager(context: ?AbilityContext): ResourceManager {
-        let contexts: AbilityContext = if (let Some(v) <- context) {
+    private static func getResourceManager(context: ?UIAbilityContext): ResourceManager {
+        let contexts: UIAbilityContext = if (let Some(v) <- context) {
             v
         } else {
-            GlobalContext.getContext().getAbilityContext()()
+            GlobalContext.getContext().getUIAbilityContext()()
         }
         let resourceManager: ResourceManager = ResourceManager.getResourceManager(getStageContext(contexts))
         return resourceManager

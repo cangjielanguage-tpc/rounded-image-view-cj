@@ -1,13 +1,10 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 
-public var globalAbilityContext: ?AbilityContext = None
+public var globalAbilityContext: ?UIAbilityContext = None
 
-class MainAbility <: Ability {
+class MainAbility <: UIAbility {
     public init() {
         super()
         registerSelf()
@@ -15,7 +12,7 @@ class MainAbility <: Ability {
 
     public override func onCreate(want: Want, launchParam: LaunchParam): Unit {
         globalAbilityContext = context
-        GlobalContext.getContext().setAbilityContext(globalAbilityContext.getOrThrow())
+        GlobalContext.getContext().setUIAbilityContext(globalAbilityContext.getOrThrow())
         AppLog.info("MainAbility OnCreated.${want.abilityName}")
         match (launchParam.launchReason) {
             case LaunchReason.START_ABILITY => AppLog.info("START_ABILITY")
@@ -29,6 +26,6 @@ class MainAbility <: Ability {
     }
 }
 
-public func getGlobalAbilityContext(): AbilityContext {
+public func getGlobalAbilityContext(): UIAbilityContext {
     globalAbilityContext.getOrThrow()
 }

@@ -1,16 +1,13 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package roundedimageview
 
-internal import std.collection.*
+internal import std.collection.HashMap
+internal import std.collection.ArrayList
 internal import std.sync.*
-internal import std.time.*
 internal import std.io.*
 internal import std.math.*
 
-internal import net.http.*
-internal import net.tls.*
+internal import stdx.net.http.*
+internal import stdx.net.tls.*
 
 internal import ohos.base.*
 internal import ohos.component.*
@@ -27,4 +24,5 @@ internal import ohos.image.createImageSource
 
 internal import ohos.resource_manager.ResourceManager
 
-internal import cj_res_roundedimageview.app
+// kit
+internal import kit.LocalizationKit.AppResource
