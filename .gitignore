@@ -28,3 +28,4 @@ target/
 code-linter.json5
 **/IDL_Dependencies_List~
 **/build-script-cache
+/roundedimageview/har/
