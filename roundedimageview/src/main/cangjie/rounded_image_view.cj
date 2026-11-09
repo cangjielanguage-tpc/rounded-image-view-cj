@@ -459,94 +459,115 @@ public class RoundedImageView {
     }
 
     private func drawBitmap() {
-        let callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit = {
-            pixelMap, width, height, error =>
-                if (error) {
+        if (model.isSvg) {
+            loadSvgIntoCanvas(false)
+            return
+        }
+        let callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, ok: Bool) -> Unit = {
+            pixelMap, width, height, ok =>
+                if (ok) {
                     launch {
-                        img = pixelMap
-                        srcWidth = Float64(width)
-                        srcHeight = Float64(height)
-                        let padding = if(model.padding > 0.0){
-                            model.padding
-                        } else {
-                            0.0
-                        }
-                        scaleW = (model.uiWidth - padding * 2.0) / srcWidth
-                        scaleH = (model.uiHeight - padding * 2.0) / srcHeight
-                        // 绘制边框
-                        if(model.borderWidth > 0.0){
-                            // 边框大于0的时候才绘制边框
-                            if (let Some(v) <- model.borderColor) {
-                                context.strokeStyle(v)
-                            } else if (let Some(v) <- model.borderColorUInt32) {
-                                context.strokeStyle(v)
-                            } else if (let Some(v) <- model.borderColorCanvasGradient) {
-                                context.strokeStyle(v)
-                            }
-                            context.lineWidth(model.borderWidth)
-                        }
-                        context.save()
-                        // 图形矩阵变化
-                        setImageCanvasTransform()
-                        // 图片内容绘制
-                        setImage()
-                        context.restore()
-                        context.globalCompositeOperation(CompositeOperation.DestinationIn)
-                        setRect()
-                        context.fill()
-                        context.globalCompositeOperation(CompositeOperation.SourceOver)
-                        setRect()
-                        if(model.borderWidth > 0.0){
-                            context.stroke()
-                        }
+                        renderPixelMapImage(pixelMap, width, height, false)
                     }
                 }
         }
-        fut = PixelMapUtils.createPixelMap(model.src, model.srcResource, model.srcArray, model.srcType, model.isSvg, callback, model.getContext())
+        fut = PixelMapUtils.createPixelMap(model.src, model.srcResource, model.srcArray, model.srcType, callback, model.getContext())
     }
 
     private func drawOvals() {
-        let callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, error: Bool) -> Unit = {
-            pixelMap, width, height, error =>
-                if (error) {
+        if (model.isSvg) {
+            loadSvgIntoCanvas(true)
+            return
+        }
+        let callback: (pixelMap: ?PixelMap, width: Int64, height: Int64, ok: Bool) -> Unit = {
+            pixelMap, width, height, ok =>
+                if (ok) {
                     launch {
-                        img = pixelMap
-                        srcWidth = Float64(width)
-                        srcHeight = Float64(height)
-                        let padding = if(model.padding > 0.0){
-                            model.padding
-                        } else {
-                            0.0
-                        }
-                        scaleW = (model.uiWidth - padding * 2.0) / srcWidth
-                        scaleH = (model.uiHeight - padding * 2.0) / srcHeight
-                        if(model.borderWidth > 0.0){
-                            // 边框大于0的时候才绘制边框
-                            if (let Some(v) <- model.borderColor) {
-                                context.strokeStyle(v)
-                            } else if (let Some(v) <- model.borderColorUInt32) {
-                                context.strokeStyle(v)
-                            } else if (let Some(v) <- model.borderColorCanvasGradient) {
-                                context.strokeStyle(v)
-                            }
-                            context.lineWidth(model.borderWidth)
-                        }
-                        context.save()
-                        setImageCanvasTransform()
-                        setImage()
-                        context.restore()
-                        context.globalCompositeOperation(CompositeOperation.DestinationIn)
-                        setOval()
-                        context.fill()
-                        context.globalCompositeOperation(CompositeOperation.SourceOver)
-                        setOval()
-                        if(model.borderWidth > 0.0){
-                            context.stroke()
+                        renderPixelMapImage(pixelMap, width, height, true)
+                    }
+                }
+        }
+        fut = PixelMapUtils.createPixelMap(model.src, model.srcResource, model.srcArray, model.srcType, callback, model.getContext())
+    }
+
+    // 加载SVG源字节后，在UI线程内经svg4cj离屏渲染为PixelMap（px2vp/离屏画布依赖UI上下文），再走位图绘制
+    private func loadSvgIntoCanvas(oval: Bool) {
+        let callback: (bytes: Array<Byte>, ok: Bool) -> Unit = {
+            bytes, ok =>
+                if (ok) {
+                    launch {
+                        try {
+                            let svgPixelMap: PixelMap = SVGImageViewModel().getSVGPixelMap(bytes, model.getContext())
+                            let info = svgPixelMap.getImageInfo()
+                            // PixelMap尺寸为物理px，Canvas绘制坐标系为vp，换算后传入
+                            let w = pxToVp(Int64(info.size.width))
+                            let h = pxToVp(Int64(info.size.height))
+                            renderPixelMapImage(svgPixelMap, w, h, oval)
+                        } catch (e: Exception) {
+                            // SVG解析/渲染或vp换算失败仅记录日志，避免UI线程崩溃
+                            Hilog.error(0, "RoundedImageView", "RoundedImageView svg render failed: ${e}")
                         }
                     }
                 }
         }
-        fut = PixelMapUtils.createPixelMap(model.src, model.srcResource, model.srcArray, model.srcType, model.isSvg, callback, model.getContext())
+        fut = PixelMapUtils.loadSvgBytes(model.src, model.srcResource, model.srcArray, model.srcType, callback, model.getContext())
+    }
+
+    // px 转 vp（四舍五入，避免截断取整产生 1px 偏差），换算不可用时回退物理像素并记录告警
+    private func pxToVp(px: Int64): Int64 {
+        match (px2vp(px.px)) {
+            case Some(v) => Int64(round(v.value))
+            case None =>
+                Hilog.error(0, "RoundedImageView", "RoundedImageView px2vp unavailable, fallback to raw px: ${px}")
+                px
+        }
+    }
+
+    // 位图绘制公共体：计算适配比例、绘制图片内容并按rect/oval裁剪、描边
+    private func renderPixelMapImage(pixelMap: ?PixelMap, width: Int64, height: Int64, oval: Bool) {
+        img = pixelMap
+        srcWidth = Float64(width)
+        srcHeight = Float64(height)
+        let padding = if(model.padding > 0.0){
+            model.padding
+        } else {
+            0.0
+        }
+        scaleW = (model.uiWidth - padding * 2.0) / srcWidth
+        scaleH = (model.uiHeight - padding * 2.0) / srcHeight
+        if(model.borderWidth > 0.0){
+            // 边框大于0的时候才绘制边框
+            if (let Some(v) <- model.borderColor) {
+                context.strokeStyle(v)
+            } else if (let Some(v) <- model.borderColorUInt32) {
+                context.strokeStyle(v)
+            } else if (let Some(v) <- model.borderColorCanvasGradient) {
+                context.strokeStyle(v)
+            }
+            context.lineWidth(model.borderWidth)
+        }
+        context.save()
+        // 图形矩阵变化
+        setImageCanvasTransform()
+        // 图片内容绘制
+        setImage()
+        context.restore()
+        context.globalCompositeOperation(CompositeOperation.DestinationIn)
+        if (oval) {
+            setOval()
+        } else {
+            setRect()
+        }
+        context.fill()
+        context.globalCompositeOperation(CompositeOperation.SourceOver)
+        if (oval) {
+            setOval()
+        } else {
+            setRect()
+        }
+        if(model.borderWidth > 0.0){
+            context.stroke()
+        }
     }
 
     private func drawColors() {

@@ -1,3 +1,11 @@
+# 1.0.0
+
+1. 支持SVG图片显示并带边框，支持圆角/椭圆裁剪与ScaleType七种缩放类型
+2. 支持SVG的media、rawfile、uri、url、arraybuffer数据源
+3. 网络图片下载改用ohos.net.http实现
+4. 适配 DevEco Studio for Windows 6.1.1 版本
+5. 上下文接口 setAbilityContext() 变更为 setUIAbilityContext()，参数类型由 AbilityContext 调整为 UIAbilityContext
+
 # 0.0.3
 
 1. 适配 DevEco Studio for Windows 5.1.1.851 版本
