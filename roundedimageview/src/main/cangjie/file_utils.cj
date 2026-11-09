@@ -37,7 +37,7 @@ class FileUtils {
             let stat = FileFs.stat(path)
             return stat.isFile()
         } catch (e: Exception) {
-            AppLog.error("FileUtils exist error： ${e}")
+            Hilog.error(0, "RoundedImageView", "FileUtils exist error: ${e}")
             return false
         }
     }
@@ -60,7 +60,7 @@ class FileUtils {
             let stat = FileFs.stat(path)
             return stat.isDirectory()
         } catch (e: Exception) {
-            AppLog.error("FileUtils existFolder error: ${e}")
+            Hilog.error(0, "RoundedImageView", "FileUtils existFolder error: ${e}")
             return false
         }
     }
@@ -76,7 +76,7 @@ class FileUtils {
             FileFs.read(fd.fd, buf)
             return buf
         } catch (e: Exception) {
-            AppLog.error("FileUtils readFilePic error: ${e}")
+            Hilog.error(0, "RoundedImageView", "FileUtils readFilePic error: ${e}")
             return Array<Byte>(0, repeat: 0)
         }
     }
@@ -91,7 +91,7 @@ class FileUtils {
             FileFs.write(fd.fd, picData)
             FileFs.close(fd)
         } catch (e: Exception) {
-            AppLog.error("FileUtils writePic error: ${e}")
+            Hilog.error(0, "RoundedImageView", "FileUtils writePic error: ${e}")
         }
     }
 }

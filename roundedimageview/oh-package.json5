@@ -1,10 +1,11 @@
 {
-  "name": "roundedimageview",
+  "name": "@cangjie-tpc/roundedimageview",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
-  "main": "",
+  "main": "Index.ets",
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
+    "@cangjie-tpc/svg": "file:./har/svg.har"
   }
 }

@@ -12,5 +12,6 @@ internal import ohos.display.*
 internal import ohos.router.*
 internal import ohos.resource_manager.*
 internal import kit.LocalizationKit.*
+internal import kit.PerformanceAnalysisKit.Hilog
 
 internal import roundedimageview.*
